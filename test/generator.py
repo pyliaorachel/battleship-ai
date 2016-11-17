@@ -1,4 +1,7 @@
+from collections import defaultdict
 from random import shuffle
+
+import numpy as np
 
 
 def generate_battleship_map(height, width, num_of_targets):
@@ -33,6 +36,57 @@ def get_sum_targets(battleship_map):
     sum_row_targets = [sum(row) for row in battleship_map]
     sum_column_targets = [sum(column) for column in zip(*battleship_map)]
     return sum_row_targets, sum_column_targets
+
+
+def get_ships(battleship_map):
+    """Get the number of each length of ships.
+
+    Args:
+        battleship_map (list[list[int]]): A 2D battleship map with 0 as ocean and 1 as target.
+
+    Returns:
+        ships (list[int]): Number of each length of ships.
+    """
+    ships_map = defaultdict(lambda: 0)
+    intermediate_map = battleship_map[:]
+
+    # use greedy algorithm to remove ships until there is no more ship on the map
+    while sum([sum(row) for row in intermediate_map]) > 0:
+        # find the largest connected ship by row and column
+        row_lengths = []
+        col_lengths = []
+        for row in intermediate_map:
+            row_lengths.extend(''.join(map(str, row)).split('0'))
+        for column in zip(*intermediate_map):
+            col_lengths.extend(''.join(map(str, column)).split('0'))
+        max_row = max(row_lengths)
+        max_col = max(col_lengths)
+
+        # remove largest ship from the map
+        if max_row >= max_col:
+            length = len(max_row)
+            for index, row in enumerate(intermediate_map):
+                string = ''.join(map(str, row))
+                if max_row in string:
+                    ships_map[length] += string.count(max_row)
+                    string = string.replace(max_row, '0' * length)
+                    intermediate_map[index] = list(map(int, list(string)))
+        else:
+            length = len(max_col)
+            transposed_map = np.array(intermediate_map).T.tolist()
+            for index, row in enumerate(transposed_map):
+                string = ''.join(map(str, row))
+                if max_col in string:
+                    ships_map[length] += string.count(max_col)
+                    string = string.replace(max_col, '0' * length)
+                    transposed_map[index] = list(map(int, list(string)))
+            intermediate_map = np.array(transposed_map).T.tolist()
+
+    # create ships list
+    ships = []
+    for i in range(max(ships_map.keys())):
+        ships.append(ships_map[i])
+    return ships
 
 
 def print_battleship_map(battleship_map):
@@ -105,6 +159,9 @@ if __name__ == '__main__':
     sum_row_targets, sum_column_targets = get_sum_targets(battleship_map)
     print('sum_row_targets = {}'.format(sum_row_targets))
     print('sum_column_targets = {}'.format(sum_column_targets))
+
+    ships = get_ships(battleship_map)
+    print('ships = {}'.format(ships))
 
     # Test reading map from and writing map to file
     path = os.path.dirname(__file__)
