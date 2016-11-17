@@ -173,33 +173,33 @@ def print_target_maps(target_maps):
 ####################
 # File I/O Methods #
 ####################
-def read_target_maps_from_file(file_path):
-    """Return a list of target maps from file.
+def read_list_from_file(file_path):
+    """Return a list of items from file.
 
     Args:
         file_path (str): Path to read the file from.
 
     Returns:
-        target_maps (list[list[list[int]]]): A list of target maps.
+        item (list): A list of items.
     """
-    target_maps = []
+    output_list = []
     with open(file_path, 'r') as f:
-        for target_map in f.read().splitlines():
-            target_maps.append(eval(target_map))
-    return target_maps
+        for item in f.read().splitlines():
+            output_list.append(eval(item))
+    return output_list
 
 
-def save_target_maps_to_file(target_maps, file_path):
-    """Save a list of target maps to file. If a file exist and to_overwrite is False, append to file.
+def save_list_to_file(input_list, file_path):
+    """Save a list of items. If a file exist and to_overwrite is False, append to file.
     Else, overwrite the file.
 
     Args:
-        target_maps (list[list[list[int]]]): A list of target maps.
+        input_list (list): A list of items.
         file_path (str): Path to save the file to.
     """
     with open(file_path, 'a') as f:
-        for target_map in target_maps:
-            f.write(str(target_map) + '\n')
+        for item in input_list:
+            f.write(str(item) + '\n')
 
 
 if __name__ == '__main__':
@@ -229,8 +229,8 @@ if __name__ == '__main__':
     target_maps.append(generate_target_map(5, 5, 10))
 
     file_name = 'sample.txt'
-    save_target_maps_to_file(target_maps, os.path.join(path, file_name))
-    target_maps = read_target_maps_from_file(os.path.join(path, file_name))
+    save_list_to_file(target_maps, os.path.join(path, file_name))
+    target_maps = read_list_from_file(os.path.join(path, file_name))
 
     print('Test writing map to and reading map from file...')
     print_target_maps(target_maps)
