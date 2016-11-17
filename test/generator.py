@@ -167,8 +167,10 @@ if __name__ == '__main__':
     path = os.path.dirname(__file__)
     battleship_maps = [battleship_map]
 
-    save_battleship_maps_to_file(battleship_maps, os.path.join(path, 'sample.txt'))
-    battleship_maps = read_battleship_maps_from_file(os.path.join(path, 'sample.txt'))
+    file_name = 'sample.txt'
+    save_battleship_maps_to_file(battleship_maps, os.path.join(path, file_name))
+    battleship_maps = read_battleship_maps_from_file(os.path.join(path, file_name))
     print()
     print('Test reading map from and writing map to file...')
     print_battleship_maps(battleship_maps)
+    os.remove(os.path.join(path, file_name))
