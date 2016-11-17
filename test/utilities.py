@@ -84,7 +84,7 @@ def get_ships(battleship_map):
 
     # create ships list
     ships = []
-    for i in range(max(ships_map.keys())):
+    for i in range(max(ships_map.keys()) + 1):
         ships.append(ships_map[i])
     return ships
 
