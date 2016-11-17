@@ -94,7 +94,7 @@ def create_tests(height, width, num_of_targets, num_of_tests, to_save=False):
         to_save (Optional[bool]): Whether or not to save.
 
     Returns:
-
+        list of BattleshipTests
     """
     tests = [BattleshipTest(generate_target_map(height, width, num_of_targets)) for _ in range(num_of_tests)]
     if to_save:
