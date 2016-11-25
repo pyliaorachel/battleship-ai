@@ -18,21 +18,65 @@ def lineConstraint(t, num_of_tar):
     sum += t[i]
   return (sum == num_of_tar)
 
+
 '''
    a function to check whether the variables assignment in the board
    satisfies the number of ships of a certain size specified.
    @param t : the tuple to check
-   @param ship_size: the size of the ship for this constraint
-   @param num_of_ship: the number of ships of ship_size
-   @return : True when the number of targets is met, False otherwise
+   @param max_ship_size: the max size of the ships in this map
+   @param ships: a list of number of ships of each ship_size 
+   @return : True when the number of ships of each size is met, False otherwise
 '''
-def shipConstraint(t, ship_size, num_of_ship):
-  sum = 0
+def shipNumConstraint(t, max_ship_size, ships):
+  count_ship = []
+  # initialize count_ship array to all 0
+  for l in range(0, max_ship_size +1):
+    count_ship.append(0);
+  # count ships of all length
   for i in range(len(t)):
-    if t[i] == ship_size:
-      sum += 1
-  return (sum == num_of_ship)
+    for j in range(1, max_ship_size + 1):
+      if t[i] == j:
+        count_ship[j] += 1
+  return (count_ship == ships)
 
+
+'''
+  a function to map the index(i,j) from a 2D board
+  to k in 1D list given the width w of the board
+  @param w: board width
+  @param i: row index in 2D board
+  @param j: col index in 2D board
+  @return : index in 1D list
+'''
+def index(w,i,j):
+  return (i * w + j)
+
+
+'''
+   a function to check whether the variables assignment in the board
+   satisfies the ship of a certain length is intact, 
+   namely the ship should occupying contiguous ship_size number of grids.
+   @param t : the tuple to check
+   @param h: board height
+   @param w: board width
+   @param max_ship: the largest ship size
+   @return : True when ships of all length are intact, False otherwise
+'''
+def shipIntactConstraint(t, h, w, max_ship):
+  for l in range(2, max_ship + 1):
+    for i in range(h):
+      for j in range(w):
+        if t[index(w,i,j)] == l:
+          count_row = 1
+          count_col = 1
+          for a in range(1,l):
+            if t[index(w,i,j+a)] == l:
+              count_row += 1
+            if t[index(w,i+a,j)] == l:
+              count_col += 1
+          if not (count_row == l or count_col == l):
+            return False
+  return True
 
 def battleship_csp_model(row_targets, col_targets, num_of_targets, ships):
     '''Return a CSP object representing a battleship CSP problem along 
@@ -65,8 +109,8 @@ def battleship_csp_model(row_targets, col_targets, num_of_targets, ships):
 
 # Initialize variable list
     vs = []
-    for i in range(n):
-      for j in range(n):
+    for i in range(h):
+      for j in range(w):
         vs.append(variable_array[i][j])
 
 # Initialize constraints
@@ -82,7 +126,7 @@ def battleship_csp_model(row_targets, col_targets, num_of_targets, ships):
       for t in itertools.product(*domains):
         if lineConstraint(t, row_targets[i]):
           sat_tuples.append(t)
-        con.add_satisfying_tuples(sat_tuples)
+      con.add_satisfying_tuples(sat_tuples)
       cons.append(con)  
 
     # col constraint
@@ -97,21 +141,32 @@ def battleship_csp_model(row_targets, col_targets, num_of_targets, ships):
       for t in itertools.product(*domains):
         if lineConstraint(t, col_targets[j]):
           sat_tuples.append(t)
-        con.add_satisfying_tuples(sat_tuples)
+      con.add_satisfying_tuples(sat_tuples)
       cons.append(con) 
 
-    #ship constraint
-    for l in range(1, max_ship + 1):
-      sat_tuples = []
-      domains = []
-      for k in range(0, w + h):
-        domains.append(vs[l].domain())
-      con = Constraint('C(ship{})'.format(l), vs)
-      for t in itertools.product(*domains):
-        if shipConstraint(t, l, ships[l]):
-          sat_tuples.append(t)
-        con.add_satisfying_tuples(sat_tuples)
-      cons.append(con)
+    #shipNum constraint
+    sat_tuples = []
+    domains = []
+    for k in range(0, w + h):
+      domains.append(vs[l].domain())
+    con = Constraint('C(shipNum)', vs)
+    for t in itertools.product(*domains):
+      if shipNumConstraint(t, max_ship, ships):
+        sat_tuples.append(t)
+    con.add_satisfying_tuples(sat_tuples)
+    cons.append(con)
+
+    #shipIntact constraint
+    sat_tuples = []
+    domains = []
+    for k in range(0, w + h):
+      domains.append(vs[l].domain())
+    con = Constraint('C(shipIntact)', vs)
+    for t in itertools.product(*domains):
+      if shipIntactConstraint(t, h, w, max_ship):
+        sat_tuples.append(t)
+    con.add_satisfying_tuples(sat_tuples)
+    cons.append(con)
 
 # Create and return battleship_csp
     battleship_csp = CSP('battleship', vs)
