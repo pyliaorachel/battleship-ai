@@ -242,7 +242,7 @@ def battleship_csp_model(row_targets, col_targets, num_of_targets, ships):
     sat_tuples = []
     domains = []
     for k in range(0, w * h):
-      domains.append(vs[l].domain())
+      domains.append(vs[k].domain())
     con = Constraint('C(ship)', vs)
     for t in itertools.product(*domains):
       if ship_num_constraint(t, max_ship, ships) and ship_intact_noCross_constraint(t, h, w):
