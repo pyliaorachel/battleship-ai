@@ -2,6 +2,7 @@
 #to be implemented.
 
 import random
+import functools
 
 '''
 This file will contain different variable ordering heuristics to be used within
@@ -37,7 +38,6 @@ def ord_random(csp):
     var = random.choice(csp.get_all_unasgn_vars())
     return var
 
-
 def val_arbitrary(csp,var):
     '''
     val_arbitrary(csp,var):
@@ -46,6 +46,21 @@ def val_arbitrary(csp,var):
     '''
     return var.cur_domain()
 
+def val_increasing_order(csp,var):
+    '''
+    val_increasing_ordery(csp,var):
+    A val_ordering function that takes CSP object csp and Variable object var,
+    and returns a value in var's current domain in increasing order.
+    '''
+    return sorted(var.cur_domain())
+
+def val_decreasing_order(csp,var):
+    '''
+    val_decreasing_ordery(csp,var):
+    A val_ordering function that takes CSP object csp and Variable object var,
+    and returns a value in var's current domain in decreasing order.
+    '''
+    return sorted(var.cur_domain(), reverse=True)
 
 def ord_mrv(csp):
     '''
@@ -55,7 +70,7 @@ def ord_mrv(csp):
     MRV returns the variable with the most constrained current domain 
     (i.e., the variable with the fewest legal values).
     '''
-#IMPLEMENT
+
     min_ = 9999999
     min_var = None
     vars = csp.get_all_unasgn_vars()
@@ -76,7 +91,7 @@ def ord_dh(csp):
     at least one constraint that includes both v1 and v2,
     DH returns the variable whose node has highest degree.
     '''    
-#IMPLEMENT
+
     vars = csp.get_all_unasgn_vars()
     max_ = -1
     max_var = None
@@ -104,7 +119,7 @@ def val_lcv(csp,var):
     The best value, according to LCV, is the one that rules out the fewest domain values in other 
     variables that share at least one constraint with var.
     '''    
-#IMPLEMENT
+
     cons = csp.get_cons_with_var(var)
     val_count = {}
     var_domain = var.cur_domain()
@@ -123,38 +138,37 @@ def val_lcv(csp,var):
     l = sorted(val_count.keys(), key=lambda x: val_count[x])
     return l
 
-def ord_custom(csp):
+def val_decrease_lcv(csp,var):
     '''
-    ord_custom(csp):
-    A var_ordering function that takes CSP object csp and returns Variable object var,
-    according to a Heuristic of your design.  This can be a combination of the ordering heuristics 
-    that you have defined above.
+    val_decrease_lcv(csp,var):
+    Same as val_lcv, break tie with decreasing order of values
     '''    
-#IMPLEMENT
-    
-    vars = csp.get_all_unasgn_vars()
 
-    # for dh
-    max_ = -1
-    max_var = None
-
-    # for mrv
-    min_ = 9999999
-
-    # calculate dh first, break tie using mrv
-    for var in vars:
-        cons = csp.get_cons_with_var(var)
-        unasgn_vars = set()
+    cons = csp.get_cons_with_var(var)
+    val_count = {}
+    var_domain = var.cur_domain()
+    for val in var_domain:
+        val_count[val] = 0
+        var.assign(val)    
         for con in cons:
-            unasgn_vars = unasgn_vars.union(set(con.get_unasgn_vars()))
-        if (len(unasgn_vars) > max_):
-            max_ = len(unasgn_vars)
-            max_var = var
-            min_ = var.cur_domain_size()
-        elif (len(unasgn_vars) == max_):
-            if var.cur_domain_size() < min_:
-                max_var = var
-                min_ = var.cur_domain_size()
+            scope = con.get_scope()
+            for affected_var in scope:
+                if not affected_var.is_assigned():
+                    domain = affected_var.cur_domain()
+                    for potential_val in domain:
+                        if not con.has_support(affected_var, potential_val):
+                            val_count[val] = val_count[val] + 1
+        var.unassign()
+    l = sorted(val_count.keys(), key=functools.cmp_to_key(lambda a,b: (b - a) if (val_count[a] == val_count[b]) else (val_count[a] - val_count[b])))
+    return l
 
-    return max_var
+
+
+
+
+
+
+
+
+
 
