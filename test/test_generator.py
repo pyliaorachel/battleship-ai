@@ -1,9 +1,12 @@
-import os
-
+import math
 from test.utilities import *
 
 test_folder = os.path.dirname(os.path.abspath(__file__))
 static_test_folder = os.path.join(test_folder, 'static_tests')
+
+# the constraint tests had to be created manually
+ship_constraint_tests_folder = os.path.join(static_test_folder, 'ship_constaint_tests')
+scaling_tests_folder = os.path.join(static_test_folder, 'scaling_tests')
 
 
 class BattleshipTest:
@@ -129,6 +132,18 @@ def load_tests(file_path):
     if os.path.isfile(file_path):
         return [BattleshipTest(*item) for item in read_list_from_file(file_path)]
     return []
+
+
+def create_scaling_test(starting_board_size, number_of_boards_to_test, starting_target_size,
+                        number_of_tests_per_board_size_per_target_size):
+    # we double board size for n times
+    board_sizes = [starting_board_size * (2 ** power) for power in range(number_of_boards_to_test)]
+    for board_size in board_sizes:
+        # we double target size till it reaches the maximum
+        target_sizes = [starting_target_size * (2 ** power) for power in range(math.ceil(math.log2(board_size ** 2)))]
+        for target_size in target_sizes:
+            create_tests(board_size, target_size, 0, number_of_tests_per_board_size_per_target_size, True,
+                         scaling_tests_folder)
 
 
 if __name__ == '__main__':
