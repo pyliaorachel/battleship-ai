@@ -18,6 +18,7 @@ def prop_BT(csp, newVar=None):
     if not newVar:
         return True, []
     for c in csp.get_cons_with_var(newVar):
+        print(c)
         if c.get_n_unasgn() == 0:
             vals = []
             vars = c.get_scope()
@@ -68,7 +69,7 @@ def prop_FC(csp, newVar=None):
             if not c.check(vals):
                 return False, []
         elif c.get_n_unasgn() == 1:
-            unasgn_var = (set(c.get_scope()) - set([newVar])).pop()
+            unasgn_var = c.get_unasgn_vars()[0]
 
             FC_check_ok,prunings = FC_check(c, unasgn_var)
             all_prunings = all_prunings + prunings
@@ -83,7 +84,7 @@ def prop_GAC(csp, newVar=None):
         while GAC_q:
             c = GAC_q.popleft()
 
-            vars = c.get_scope()
+            vars = c.get_unasgn_vars()
             for var in vars:
                 domain = var.cur_domain()
                 for val in domain:
@@ -96,9 +97,9 @@ def prop_GAC(csp, newVar=None):
                             return False, prunings
                         else:
                             cons = csp.get_cons_with_var(var)
-                            for c in cons:
-                                if GAC_q.count(c) == 0:
-                                    GAC_q.append(c)
+                            for con in cons:
+                                if GAC_q.count(con) == 0:
+                                    GAC_q.append(con)
         # no DWO, prune values
         return True, prunings
 
