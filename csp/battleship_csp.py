@@ -133,7 +133,7 @@ def ship_num_cons(t, max_ship_size, ships):
   # count total ships of all length
   for i in range(len(t)):
     total_count_ship[t[i][0]] += 1
-    num_count_ship[t[i][0]][t[i][0]] += 1
+    num_count_ship[t[i][0]][t[i][1]] += 1
   # 0 is dummy
   total_count_ship[0] = 0
   # divide by ship size to get number of shipss
@@ -141,8 +141,9 @@ def ship_num_cons(t, max_ship_size, ships):
     total_count_ship[l] /= l
   # check the numbered ship match length  
   for l in range(1, max_ship_size + 1):
-    if num_count_ship[l] != [l] * (ships[l]):
-      return False
+    for k in range(0,ships[l])
+      if num_count_ship[l][k] != [l] * (ships[l]):
+        return False
   return (total_count_ship == ships)
 
 
