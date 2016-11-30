@@ -15,9 +15,9 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         3 3 3 0
         '''
 
-        # row_targets = [2, 1, 2, 3]
-        # col_targets = [1, 3, 2, 2]
-        # ships = [0, 1, 2, 1]
+        row_targets = [2, 1, 2, 3]
+        col_targets = [1, 3, 2, 2]
+        ships = [0, 1, 2, 1]
 
         '''
         3 0 1 0
@@ -26,9 +26,23 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         4 4 4 4
         '''
 
-        row_targets = [2, 2, 3, 4]
-        col_targets = [4, 3, 3, 1]
-        ships = [0, 2, 1, 1, 1]
+        # row_targets = [2, 2, 3, 4]
+        # col_targets = [4, 3, 3, 1]
+        # ships = [0, 2, 1, 1, 1]
+
+        '''
+        0 0 0 0 2 0 0
+        0 0 0 0 2 0 6
+        4 4 4 4 0 0 6
+        0 0 0 0 2 2 6
+        0 0 0 1 0 0 6
+        3 3 3 0 0 0 6
+        0 0 2 2 0 0 6
+        '''
+
+        # row_targets = [1, 2, 5, 3, 2, 4, 3]
+        # col_targets = [2, 2, 3, 3, 3, 1, 6]
+        # ships = [0, 1, 3, 1, 1, 0, 1]
 
         csp,vars = model(row_targets, col_targets, ships)
 
@@ -64,13 +78,42 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
     return details
 
 trace_model = False
-trace_BT = True
+trace_BT = False
 print("---model 1 sample test---\n")
-details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'FC', orderings.ord_random, orderings.val_arbitrary, trace_model, trace_BT)
+details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'BT', orderings.ord_random, orderings.val_decrease_lcv, trace_model, trace_BT)
+print(details)
+print("---finished model 1 sample test---\n") 
+print("---model 1 sample test---\n")
+details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'BT', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
+print(details)
+print("---finished model 1 sample test---\n") 
+print("---model 1 sample test---\n")
+details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'FC', orderings.ord_random, orderings.val_decrease_lcv, trace_model, trace_BT)
+print(details)
+print("---finished model 1 sample test---\n") 
+print("---finished model 1 sample test---\n") 
+print("---model 1 sample test---\n")
+details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'FC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
+print(details)
+print("---finished model 1 sample test---\n") 
+print("---model 1 sample test---\n")
+details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'GAC', orderings.ord_random, orderings.val_decrease_lcv, trace_model, trace_BT)
+print(details)
+print("---finished model 1 sample test---\n")  
+print("---model 1 sample test---\n")
+details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'GAC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
 print("---finished model 1 sample test---\n")   
 # print("---model 2 sample test---\n")
-# details = test_sample_run(models.battleship_csp_model2, BT, 'BT', orderings.ord_random, orderings.val_arbitrary, trace_model, trace_BT)
+# details = test_sample_run(models.battleship_csp_model2, BT, 'BT', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
+# print(details)
+# print("---finished model 2 sample test---\n")  
+# print("---model 2 sample test---\n")
+# details = test_sample_run(models.battleship_csp_model2, BT, 'FC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
+# print(details)
+# print("---finished model 2 sample test---\n")  
+# print("---model 2 sample test---\n")
+# details = test_sample_run(models.battleship_csp_model2, BT, 'GAC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 # print(details)
 # print("---finished model 2 sample test---\n")   
 

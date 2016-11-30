@@ -18,7 +18,6 @@ def prop_BT(csp, newVar=None):
     if not newVar:
         return True, []
     for c in csp.get_cons_with_var(newVar):
-        print(c)
         if c.get_n_unasgn() == 0:
             vals = []
             vars = c.get_scope()
@@ -48,7 +47,6 @@ def prop_FC(csp, newVar=None):
             if not c.check(vals):
                 prunings.append((check_var,val))
                 check_var.prune_value(val)
-        
         if len(prunings) == len(domain):
             # DWO
             return False, prunings
@@ -67,7 +65,7 @@ def prop_FC(csp, newVar=None):
             for var in vars:
                 vals.append(var.get_assigned_value())
             if not c.check(vals):
-                return False, []
+                return False, all_prunings
         elif c.get_n_unasgn() == 1:
             unasgn_var = c.get_unasgn_vars()[0]
 
