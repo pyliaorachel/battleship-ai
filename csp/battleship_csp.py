@@ -190,7 +190,6 @@ def ship_intact_cons(t, h, w):
     for j in range(w):
       l = t[index(w,i,j)][0]
       n = t[index(w,i,j)][1]
-      #print(l,n)
       if l > 1:
         count_row = 0  # count in row
         count_col = 0  # count in col
@@ -202,17 +201,15 @@ def ship_intact_cons(t, h, w):
               count_row += 1
             else:
               if count_row > 0 and count_row < l:
-                #print("row broken")
                 inrow = 0 # row broken
                 break
           if index(w,i+a,j) >= 0 and index(w,i+a,j) < h*w:
-            if t[index(w,i+a,j)][0] == l and t[index(w,i+a,j)][1] == n: 
+            if t[index(w,i+a,j)][0] == l and t[index(w,i+a,j)][1] == n:
               count_col += 1
             else:
               if count_col > 0 and count_col < l:
-                #print("col broken")
                 incol = 0
-                break # broken
+                break # col broken
         if inrow == 0 and incol == 0:
           #print("broken")
           return False
