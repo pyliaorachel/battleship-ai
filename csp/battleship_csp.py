@@ -196,13 +196,13 @@ def ship_intact_cons(t, h, w):
         inrow = 1
         incol = 1
         for a in range(-l+1,l): # scan the neighbors within size range in line
-          if index(w,i,j+a) >= 0 and index(w,i,j+a) < h*w:
+          if index(w,i,j+a) >= 0 and index(w,i,j+a) < min((i+1)*w,(w*h)):
             if t[index(w,i,j+a)][0] == l and t[index(w,i,j+a)][1] == n:
               count_row += 1
             else:
               if count_row > 0 and count_row < l:
                 inrow = 0 # row broken
-          if index(w,i+a,j) >= 0 and index(w,i+a,j) < h*w:
+          if index(w,i+a,j) >= 0 and index(w,i+a,j) < (w*h) and (index(w,i+a,j)%w == index(w,i,j)%w) :
             if t[index(w,i+a,j)][0] == l and t[index(w,i+a,j)][1] == n:
               count_col += 1
             else:
