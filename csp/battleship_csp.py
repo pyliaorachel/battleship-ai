@@ -139,11 +139,13 @@ def ship_num_cons(t, max_ship_size, ships):
   # divide by ship size to get number of shipss
   for l in range(1, max_ship_size + 1):
     total_count_ship[l] /= l
+  if total_count_ship != ships:
+    return False
   # check the numbered ship match length  
   for l in range(1, max_ship_size + 1):
     if num_count_ship[l] != [l] * (ships[l]):
       return False
-  return (total_count_ship == ships)
+  return True
 
 
 '''
