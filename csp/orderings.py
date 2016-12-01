@@ -159,7 +159,12 @@ def val_decrease_lcv(csp,var):
                         if not con.has_support(affected_var, potential_val):
                             val_count[val] = val_count[val] + 1
         var.unassign()
-    l = sorted(val_count.keys(), key=functools.cmp_to_key(lambda a,b: (b - a) if (val_count[a] == val_count[b]) else (val_count[a] - val_count[b])))
+
+    if type(var_domain[0]) == tuple:
+        l = sorted(val_count.keys(), key=functools.cmp_to_key(lambda a,b: (b[0] - a[0]) if (val_count[a] == val_count[b]) else (val_count[a] - val_count[b])))
+    else:
+        l = sorted(val_count.keys(), key=functools.cmp_to_key(lambda a,b: (b - a) if (val_count[a] == val_count[b]) else (val_count[a] - val_count[b])))
+    
     return l
 
 
