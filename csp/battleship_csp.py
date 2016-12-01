@@ -206,10 +206,10 @@ def ship_intact_cons(t, h, w):
             else:
               if count_col > 0 and count_col < l:
                 return False # broken
-      if count_row != l and count_col != l:
-        return False
-      if count_row == l and count_col == l:
-        return False
+        if count_row != l and count_col != l:
+          return False
+        if count_row == l and count_col == l:
+          return False
   return True
 
 
@@ -300,7 +300,7 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     for t in itertools.product(*domains):
       print(n)
       n += 1
-      if ship_num_cons(t, max_ship, ships) and ship_intact_cons(t, h, w):
+      if (ship_intact_cons(t, h, w) and ship_num_cons(t, max_ship, ships)):
         sat_tuples.append(t)
     con.add_satisfying_tuples(sat_tuples)
     cons.append(con)
