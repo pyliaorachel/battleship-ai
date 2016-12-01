@@ -7,22 +7,21 @@ import numpy as np
 ##########################
 # Map Generation Methods #
 ##########################
-def generate_target_map(height, width, num_of_targets):
-    """Randomly generate a target map in the dimension with the number of targets.
+def generate_target_map(board_size, num_of_targets):
+    """Randomly generate a square target map in the dimension with the number of targets.
 
     Args:
-        height (int): Height of the map
-        width (int): Width of the map
+        board_size (int): Height and width of the map
         num_of_targets (int): Number of targets to randomly add to map
 
     Returns:
         target_map (list[list[int]]): A target map with 0 as ocean and 1 as target.
     """
-    total_elements = height * width
+    total_elements = board_size ** 2
     intermediate_map = [1] * num_of_targets
     intermediate_map.extend([0] * (total_elements - num_of_targets))
     shuffle(intermediate_map)
-    target_map = [intermediate_map[i * width:i * width + width] for i in range(height)]
+    target_map = [intermediate_map[i * board_size:i * board_size + board_size] for i in range(board_size)]
     return target_map
 
 
@@ -52,9 +51,8 @@ def get_ships_and_map(target_map):
         ship_map (list[list[int]]): A ship map with 0 as ocean and i > 0 as ships with i length.
     """
     # initialize ship map, ship count and intermediate map
-    height = len(target_map)
-    width = len(target_map[0])
-    ship_map = np.array([[0] * width for _ in range(height)])
+    board_size = len(target_map)
+    ship_map = np.array([[0] * board_size for _ in range(board_size)])
     ships_count = defaultdict(lambda: 0)
     intermediate_map = target_map[:]
 
@@ -206,7 +204,8 @@ if __name__ == '__main__':
     import os
 
     # Sample usages of the methods above
-    target_map = generate_target_map(5, 5, 10)
+    # generate a 5x5 map with 10 targets
+    target_map = generate_target_map(5, 10)
 
     print('Raw Target Map = {}'.format(target_map))
     print()
@@ -225,8 +224,8 @@ if __name__ == '__main__':
 
     # Test reading map from and writing target map to file
     path = os.path.dirname(__file__)
-    target_maps = [generate_target_map(5, 5, 10)]
-    target_maps.append(generate_target_map(5, 5, 10))
+    target_maps = [generate_target_map(5, 10)]
+    target_maps.append(generate_target_map(5, 10))
 
     file_name = 'sample.txt'
     save_list_to_file(target_maps, os.path.join(path, file_name))
