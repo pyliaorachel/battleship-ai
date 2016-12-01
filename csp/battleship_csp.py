@@ -185,30 +185,42 @@ def ship_num_cons(t, max_ship_size, ships):
    @return : True when ships of all length are intact, False otherwise
 '''
 def ship_intact_cons(t, h, w): 
-  print("intact cons")
+  #print("intact cons")
   for i in range(h):
     for j in range(w):
       l = t[index(w,i,j)][0]
       n = t[index(w,i,j)][1]
+      #print(l,n)
       if l > 1:
         count_row = 0  # count in row
         count_col = 0  # count in col
+        inrow = 1
+        incol = 1
         for a in range(-l+1,l): # scan the neighbors within size range in line
           if index(w,i,j+a) >= 0 and index(w,i,j+a) < h*w:
             if t[index(w,i,j+a)][0] == l and t[index(w,i,j+a)][1] == n:
               count_row += 1
             else:
               if count_row > 0 and count_row < l:
-                return False # broken
+                #print("row broken")
+                inrow = 0 # row broken
+                break
           if index(w,i+a,j) >= 0 and index(w,i+a,j) < h*w:
             if t[index(w,i+a,j)][0] == l and t[index(w,i+a,j)][1] == n: 
               count_col += 1
             else:
               if count_col > 0 and count_col < l:
-                return False # broken
+                #print("col broken")
+                incol = 0
+                break # broken
+        if inrow == 0 and incol == 0:
+          #print("broken")
+          return False
         if count_row != l and count_col != l:
+          #print("no match")
           return False
         if count_row == l and count_col == l:
+          #print("cross")
           return False
   return True
 
@@ -297,10 +309,10 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     for k in range(0, w * h):
       domains.append(vs[k].domain())
     con = Constraint('C(ship)', vs)
-    n = 0
+    #n = 0
     for t in itertools.product(*domains):
-      print(n)
-      n += 1
+      #print(n)
+      #n += 1
       if (ship_num_cons(t, max_ship, ships) and ship_intact_cons(t, h, w)):
         sat_tuples.append(t)
     con.add_satisfying_tuples(sat_tuples)
