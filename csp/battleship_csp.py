@@ -52,13 +52,13 @@ def battleship_csp_model1(row_targets, col_targets, ships):
 
        where battleship_csp is a csp representing battleship puzzle
        and variable_array is a list of lists
-<<<<<<< HEAD
-=======
 
-       Constraints include:
+       Variable domain:
+          possible ship_size or sea(represented as 0)
+
+       Constraints:
           1. number of ships matching with row_targets for each row
           2. number of ships matching with col_targets for each column
->>>>>>> upstream/master
     '''
 
 # Get board width w, height h
@@ -220,7 +220,13 @@ def battleship_csp_model2(row_targets, col_targets, ships):
        where battleship_csp is a csp representing battleship puzzle
        and variable_array is a list of lists
 
-       Constraints include:
+      Variable domain:
+          tuples in the format of (ship_size, ship_number)
+          ship_size is the possible ship_size for this cell or sea as 0 
+          ship_number is the number for the ship
+          each ship of size l will be given a number from 0 to ships[l]-1 to identify as different ship
+
+      Constraints:
           1. number of ships matching with row_targets for each row
           2. number of ships matching with col_targets for each column
           3. number of ships matching the given ship number & is valid (i.e. no overlapping, misplacement, etc.)
@@ -340,16 +346,6 @@ class battleship_csp_model(CSP):
       return sol_board
     else:
       return []
-
-
-
-
-
-
-
-
-
-
 
 
 
