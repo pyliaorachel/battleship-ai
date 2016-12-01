@@ -151,27 +151,27 @@ def line_cons_model2(t, num_of_tar):
    @return : True when the number of ships of each size is met, False otherwise
 '''
 def ship_num_cons(t, max_ship_size, ships):
-  print("num cons")
+  ships_t = [0] * (max_ship_size + 1)
+  for l in range(1, max_ship_size + 1):
+    ships_t[l] = ships[l] * l
   # initialize count_ship lists to all 0
   total_count_ship = [0] * (max_ship_size + 1)
-  num_count_ship = [0] * (max_ship_size + 1)
-  for l in range(1, max_ship_size + 1):
-    num_count_ship[l] = [0] * (ships[l])
+  num_count_ship = []
+  for l in range(0, max_ship_size + 1):
+    num_count_ship.append([0] * (ships[l]))
   # count total ships of all length
-  for i in range(len(t)):
+  for i in range(0,len(t)):
     total_count_ship[t[i][0]] += 1
-    num_count_ship[t[i][0]][t[i][1]] += 1
+    if(t[i][0] > 0):
+      num_count_ship[t[i][0]][t[i][1]] += 1
   # 0 is dummy
   total_count_ship[0] = 0
-  # divide by ship size to get number of shipss
-  for l in range(1, max_ship_size + 1):
-    total_count_ship[l] /= l
-  if total_count_ship != ships:
+  if total_count_ship != ships_t:
     return False
-  # check the numbered ship match length  
+  # check the numbered ship match length 
   for l in range(1, max_ship_size + 1):
     if num_count_ship[l] != [l] * (ships[l]):
-      return False
+      return False 
   return True
 
 
@@ -246,7 +246,8 @@ def battleship_csp_model2(row_targets, col_targets, ships):
       row = []
       for j in range(w):
         dom = []
-        for v in range(max_ship+1):
+        dom.append((0,0))
+        for v in range(max_ship + 1):
           for n in range(ships[v]):
             dom.append((v,n))
         var = Variable('({},{})'.format(i,j), dom)
@@ -300,7 +301,7 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     for t in itertools.product(*domains):
       print(n)
       n += 1
-      if (ship_intact_cons(t, h, w) and ship_num_cons(t, max_ship, ships)):
+      if (ship_num_cons(t, max_ship, ships) and ship_intact_cons(t, h, w)):
         sat_tuples.append(t)
     con.add_satisfying_tuples(sat_tuples)
     cons.append(con)
