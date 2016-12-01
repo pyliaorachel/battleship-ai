@@ -15,9 +15,9 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         3 3 3 0
         '''
 
-        row_targets = [2, 1, 2, 3]
-        col_targets = [1, 3, 2, 2]
-        ships = [0, 1, 2, 1]
+        # row_targets = [2, 1, 2, 3]
+        # col_targets = [1, 3, 2, 2]
+        # ships = [0, 1, 2, 1]
 
         '''
         3 0 1 0
@@ -26,9 +26,9 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         4 4 4 4
         '''
 
-        # row_targets = [2, 2, 3, 4]
-        # col_targets = [4, 3, 3, 1]
-        # ships = [0, 2, 1, 1, 1]
+        row_targets = [2, 2, 3, 4]
+        col_targets = [4, 3, 3, 1]
+        ships = [0, 2, 1, 1, 1]
 
         '''
         0 0 0 0 2 0 0
@@ -59,7 +59,7 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
                 print(con)
                 print(con.sat_tuples)
 
-        solver = BT(csp, row_targets, col_targets, ships)
+        solver = BT(csp)
 
         if trace_BT:
             solver.trace_on()
@@ -70,7 +70,9 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         elif propType == 'GAC':
             solver.bt_search(prop_GAC,var_ord_type,val_ord_type)
 
-        details = "Solution found: %s" % vars
+        print(csp.get_sol_board())
+
+        details = "OK"
 
     except Exception:
 
@@ -80,27 +82,22 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
 trace_model = False
 trace_BT = False
 print("---model 1 sample test---\n")
+print("---BT with val_decrease_lcv---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'BT', orderings.ord_random, orderings.val_decrease_lcv, trace_model, trace_BT)
 print(details)
-print("---finished model 1 sample test---\n") 
-print("---model 1 sample test---\n")
+print("---BT with val_decreasing_order---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'BT', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
-print("---finished model 1 sample test---\n") 
-print("---model 1 sample test---\n")
+print("---FC with val_decrease_lcv---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'FC', orderings.ord_random, orderings.val_decrease_lcv, trace_model, trace_BT)
 print(details)
-print("---finished model 1 sample test---\n") 
-print("---finished model 1 sample test---\n") 
-print("---model 1 sample test---\n")
+print("---FC with val_decreasing_order---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'FC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
-print("---finished model 1 sample test---\n") 
-print("---model 1 sample test---\n")
+print("---GAC with val_decrease_lcv---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'GAC', orderings.ord_random, orderings.val_decrease_lcv, trace_model, trace_BT)
 print(details)
-print("---finished model 1 sample test---\n")  
-print("---model 1 sample test---\n")
+print("---GAC with val_decreasing_order---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'GAC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
 print("---finished model 1 sample test---\n")   
