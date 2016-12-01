@@ -185,7 +185,7 @@ def ship_num_cons(t, max_ship_size, ships):
    @return : True when ships of all length are intact, False otherwise
 '''
 def ship_intact_cons(t, h, w): 
-  #print("intact cons")
+  #print("intact cons") 
   for i in range(h):
     for j in range(w):
       l = t[index(w,i,j)][0]
@@ -202,14 +202,12 @@ def ship_intact_cons(t, h, w):
             else:
               if count_row > 0 and count_row < l:
                 inrow = 0 # row broken
-                break
           if index(w,i+a,j) >= 0 and index(w,i+a,j) < h*w:
             if t[index(w,i+a,j)][0] == l and t[index(w,i+a,j)][1] == n:
               count_col += 1
             else:
               if count_col > 0 and count_col < l:
-                incol = 0
-                break # col broken
+                incol = 0 # col broken
         if inrow == 0 and incol == 0:
           #print("broken")
           return False

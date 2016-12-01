@@ -13,20 +13,20 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         3 2 0 
         3 2 0 
         '''
-        '''
+        
         row_targets = [2, 2, 2]
         col_targets = [3, 2, 1]
         ships = [0, 1, 1, 1]
-        '''
+        
         '''
         1 2
         0 2
         '''
-
+        '''
         row_targets = [2, 1]
         col_targets = [1, 2]
         ships = [0, 1, 1]
-
+        '''
         csp,vars = model(row_targets, col_targets, ships)
 
         if trace_model:
@@ -64,6 +64,7 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
 
 trace_model = False
 trace_BT = False
+'''
 print("---model 1 sample test---\n")
 print("---BT with val_decrease_lcv---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'BT', orderings.ord_random, orderings.val_decrease_lcv, trace_model, trace_BT)
@@ -84,7 +85,7 @@ print("---GAC with val_decreasing_order---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'GAC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
 print("---finished model 1 sample test---\n")  
-
+'''
 
 print("---model 2 sample test---\n")
 print("---BT with val_decrease_lcv---\n")
