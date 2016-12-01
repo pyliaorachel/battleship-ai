@@ -136,7 +136,6 @@ def battleship_csp_model1(row_targets, col_targets, ships):
    @return : True when the number of targets is met, False otherwise
 '''
 def line_cons_model2(t, num_of_tar):
-  print(t)
   sum = 0
   for i in range(len(t)):
     if t[i][0] > 0:
@@ -152,6 +151,7 @@ def line_cons_model2(t, num_of_tar):
    @return : True when the number of ships of each size is met, False otherwise
 '''
 def ship_num_cons(t, max_ship_size, ships):
+  print("num cons")
   # initialize count_ship lists to all 0
   total_count_ship = [0] * (max_ship_size + 1)
   num_count_ship = [0] * (max_ship_size + 1)
@@ -185,6 +185,7 @@ def ship_num_cons(t, max_ship_size, ships):
    @return : True when ships of all length are intact, False otherwise
 '''
 def ship_intact_cons(t, h, w): 
+  print("intact cons")
   for i in range(h):
     for j in range(w):
       l = t[index(w,i,j)][0]
@@ -295,7 +296,10 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     for k in range(0, w * h):
       domains.append(vs[k].domain())
     con = Constraint('C(ship)', vs)
+    n = 0
     for t in itertools.product(*domains):
+      print(n)
+      n += 1
       if ship_num_cons(t, max_ship, ships) and ship_intact_cons(t, h, w):
         sat_tuples.append(t)
     con.add_satisfying_tuples(sat_tuples)
