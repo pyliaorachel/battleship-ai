@@ -24,7 +24,7 @@ def line_constraint(t, num_of_tar):
       sum += 1
   return (sum == num_of_tar)
 
-def battleship_csp_model(row_targets, col_targets, num_of_targets, ships):
+def battleship_csp_model1(row_targets, col_targets, ships):
     '''Return a CSP object representing a battleship CSP problem along 
        with an array of variables for the problem. That is return
 
@@ -179,13 +179,13 @@ def ship_intact_cons(t, h, w):
           if index(w,i,j+a) >= 0 and index(w,i,j+a) < h*w:
             if t[index(w,i,j+a)][0] == l and t[index(w,i,j+a)][1] == n:
               count_row += 1
-            else
+            else:
               if count_row > 0 and count_row < l:
                 return False # broken
           if index(w,i+a,j) >= 0 and index(w,i+a,j) < h*w:
             if t[index(w,i+a,j)][0] == l and t[index(w,i+a,j)][1] == n: 
               count_col += 1
-            else
+            else:
               if count_col > 0 and count_col < l:
                 return False # broken
       if count_row != l and count_col != l:
@@ -195,7 +195,7 @@ def ship_intact_cons(t, h, w):
   return True
 
 
-def battleship_csp_model_num(row_targets, col_targets, num_of_targets, ships):
+def battleship_csp_model2(row_targets, col_targets, ships):
     '''Return a CSP object representing a battleship CSP problem along 
        with an array of variables for the problem. That is return
 
