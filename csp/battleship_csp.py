@@ -4,6 +4,11 @@ Construct and return battleship CSP models.
 '''
 from cspbase import *
 import itertools
+from copy import deepcopy
+
+#==================================================================
+#================ Helper Functions ================================
+#==================================================================
 
 
 #==================================================================
@@ -17,12 +22,27 @@ import itertools
    @param num_of_tar: the number of targets for the line
    @return : True when the number of targets is met, False otherwise
 '''
-def line_constraint(t, num_of_tar):
+def line_cons_model1(t, num_of_tar):
   sum = 0
   for i in range(len(t)):
     if t[i] > 0:
       sum += 1
   return (sum == num_of_tar)
+
+'''
+   a function to map the index(i,j) from a 2D board
+   to k in 1D list given the width w of the board
+   @param w: board width
+   @param i: row index in 2D board
+   @param j: col index in 2D board
+   @return : index in 1D list
+'''
+def index(w,i,j):
+  return (i * w + j)
+
+#==================================================================
+#================ CSP model 1 =====================================
+#==================================================================
 
 def battleship_csp_model1(row_targets, col_targets, ships):
     '''Return a CSP object representing a battleship CSP problem along 
@@ -32,6 +52,13 @@ def battleship_csp_model1(row_targets, col_targets, ships):
 
        where battleship_csp is a csp representing battleship puzzle
        and variable_array is a list of lists
+<<<<<<< HEAD
+=======
+
+       Constraints include:
+          1. number of ships matching with row_targets for each row
+          2. number of ships matching with col_targets for each column
+>>>>>>> upstream/master
     '''
 
 # Get board width w, height h
@@ -70,7 +97,7 @@ def battleship_csp_model1(row_targets, col_targets, ships):
       for var in variable_array[i]:
         domains.append(var.domain())
       for t in itertools.product(*domains):
-        if line_constraint(t, row_targets[i]):
+        if line_cons_model1(t, row_targets[i]):
           sat_tuples.append(t)
       con.add_satisfying_tuples(sat_tuples)
       cons.append(con)  
@@ -85,17 +112,16 @@ def battleship_csp_model1(row_targets, col_targets, ships):
         domains.append(variable_array[i][j].domain())
       con = Constraint('C(col{})'.format(j), col)
       for t in itertools.product(*domains):
-        if line_constraint(t, col_targets[j]):
+        if line_cons_model1(t, col_targets[j]):
           sat_tuples.append(t)
       con.add_satisfying_tuples(sat_tuples)
       cons.append(con) 
 
 # Create and return battleship_csp
-    battleship_csp = CSP('battleship', vs)
+    battleship_csp = battleship_csp_model('battleship', vs, row_targets, col_targets, ships, 1)
     for c in cons:
         battleship_csp.add_constraint(c)
     return battleship_csp, variable_array
-
 
 
 #==================================================================
@@ -109,7 +135,8 @@ def battleship_csp_model1(row_targets, col_targets, ships):
    @param num_of_tar: the number of targets for the line
    @return : True when the number of targets is met, False otherwise
 '''
-def line_cons(t, num_of_tar):
+def line_cons_model2(t, num_of_tar):
+  print(t)
   sum = 0
   for i in range(len(t)):
     if t[i][0] > 0:
@@ -146,18 +173,6 @@ def ship_num_cons(t, max_ship_size, ships):
     if num_count_ship[l] != [l] * (ships[l]):
       return False
   return True
-
-
-'''
-   a function to map the index(i,j) from a 2D board
-   to k in 1D list given the width w of the board
-   @param w: board width
-   @param i: row index in 2D board
-   @param j: col index in 2D board
-   @return : index in 1D list
-'''
-def index(w,i,j):
-  return (i * w + j)
 
 
 '''
@@ -198,13 +213,17 @@ def ship_intact_cons(t, h, w):
 
 
 def battleship_csp_model2(row_targets, col_targets, ships):
+
     '''Return a CSP object representing a battleship CSP problem along 
        with an array of variables for the problem. That is return
-
        battleship_csp, variable_array
-
        where battleship_csp is a csp representing battleship puzzle
        and variable_array is a list of lists
+
+       Constraints include:
+          1. number of ships matching with row_targets for each row
+          2. number of ships matching with col_targets for each column
+          3. number of ships matching the given ship number & is valid (i.e. no overlapping, misplacement, etc.)
     '''
 
 # Get board width w, height h
@@ -244,7 +263,7 @@ def battleship_csp_model2(row_targets, col_targets, ships):
       for var in variable_array[i]:
         domains.append(var.domain())
       for t in itertools.product(*domains):
-        if line_cons(t, row_targets[i]):
+        if line_cons_model2(t, row_targets[i]):
           sat_tuples.append(t)
       con.add_satisfying_tuples(sat_tuples)
       cons.append(con)  
@@ -259,7 +278,7 @@ def battleship_csp_model2(row_targets, col_targets, ships):
         domains.append(variable_array[i][j].domain())
       con = Constraint('C(col{})'.format(j), col)
       for t in itertools.product(*domains):
-        if line_cons(t, col_targets[j]):
+        if line_cons_model2(t, col_targets[j]):
           sat_tuples.append(t)
       con.add_satisfying_tuples(sat_tuples)
       cons.append(con) 
@@ -277,8 +296,60 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     cons.append(con)
 
 # Create and return battleship_csp
-    battleship_csp = CSP('battleship', vs)
+    battleship_csp = battleship_csp_model('battleship', vs, row_targets, col_targets, ships, 2)
     for c in cons:
         battleship_csp.add_constraint(c)
     return battleship_csp, variable_array
+
+#==================================================================
+#================ General CSP model Wrapper =======================
+#==================================================================
+
+class battleship_csp_model(CSP):
+  '''
+  A wrapper class for battleship CSP model to address the issue that different models may have differnt domain structure for each variable.
+  '''
+
+  def __init__(self, name, vars=[], row_targets=[], col_targets=[], ships=[], model=1):
+    CSP.__init__(self, name, vars)
+    self.row_targets = row_targets
+    self.col_targets = col_targets
+    self.h = len(row_targets)
+    self.w = len(col_targets)
+    self.ships = ships
+    self.model = model
+    self.updated_ships = deepcopy(ships)
+    self.alloc_board = []
+
+  def get_sol_board(self):
+    '''
+    Format and return a 2D-list solution board with tuples at each entry in the form (ship_length, ship_id).
+    '''
+
+    if self.model == 1:
+      return self.alloc_board
+
+    elif self.model == 2:
+      vars = self.get_all_vars()
+      sol_board = []
+      for i in range(self.h):
+        row = []
+        for j in range(self.w):
+          row.append(vars[i * self.w + j])
+        sol_board.append(row)
+      return sol_board
+    else:
+      return []
+
+
+
+
+
+
+
+
+
+
+
+
 
