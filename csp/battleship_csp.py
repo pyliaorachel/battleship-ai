@@ -263,10 +263,13 @@ def battleship_csp_model2(row_targets, col_targets, ships):
       variable_array.append(row)
 
 # Initialize variable list
+		'''
     vs = []
-    for i in range(h):
-      for j in range(w):
+    for i in range(h):  # row
+      for j in range(w):  # scan row
         vs.append(variable_array[i][j])
+    '''
+    vs = [i for row in variable_array for i in row]
 
 # Initialize constraints
     cons = [] 
