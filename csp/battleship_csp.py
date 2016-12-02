@@ -295,10 +295,16 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     for j in range(w):
       col = []
       sat_tuples = []
+      '''
       domains = []
       for i in range(h):
         col.append(variable_array[i][j])
         domains.append(variable_array[i][j].domain())
+      '''
+      for i in range(h):
+        col.append(variable_array[i][j])
+      domains = [var.domain() for var in col]
+
       con = Constraint('C(col{})'.format(j), col)
       for t in itertools.product(*domains):
         if line_cons_model2(t, col_targets[j]):
