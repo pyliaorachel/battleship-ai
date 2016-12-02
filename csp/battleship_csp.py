@@ -248,15 +248,16 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     max_ship = len(ships) - 1
 
 # Initialize variable_array with general domain, domain value is in the format of: (ship_size, number) 
+    dom = []
+    dom.append((0,0))
+      for v in range(max_ship + 1):
+      	for n in range(ships[v]):
+        	dom.append((v,n))
+
     variable_array = []
     for i in range(h):
       row = []
       for j in range(w):
-        dom = []
-        dom.append((0,0))
-        for v in range(max_ship + 1):
-          for n in range(ships[v]):
-            dom.append((v,n))
         var = Variable('({},{})'.format(i,j), dom)
         row.append(var)
       variable_array.append(row)
@@ -274,9 +275,13 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     for i in range(h):
       con = Constraint('C(row{})'.format(i), variable_array[i])
       sat_tuples = []
+      '''
       domains = []
       for var in variable_array[i]:
         domains.append(var.domain())
+			'''
+      domains = [var.domain() for domain in variable_array[i]]
+			
       for t in itertools.product(*domains):
         if line_cons_model2(t, row_targets[i]):
           sat_tuples.append(t)
