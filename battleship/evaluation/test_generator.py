@@ -1,8 +1,8 @@
 from utilities import *
 import os
 
-test_folder = os.path.dirname(os.path.abspath(__file__))
-static_test_folder = os.path.join(test_folder, 'static_tests')
+evaluation_folder = os.path.dirname(os.path.abspath(__file__))
+static_test_folder = os.path.join(evaluation_folder, 'static_tests')
 basic_test_folder = os.path.join(static_test_folder, 'basic_tests')
 
 
