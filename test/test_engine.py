@@ -20,13 +20,14 @@ def basic_test_model1(filename, validity_check=False, trace_BT=False):
         for prop_type in ['BT', 'FC', 'GAC']:
             for val_ord_type in [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_increasing_order,
                                  val_lcv]:
-                for file in sorted(os.listdir(basic_test_folder)):
+                for file in sorted(os.listdir(basic_test_folder),
+                                   key=lambda x: (int(x.split('_')[1]), int(x.split('_')[2]))):
                     tests = load_tests(os.path.join(basic_test_folder, file))
                     run_times = []
                     for test in tests:
                         # prepare a test
                         i = test.board_size
-                        j = sum(test.rol_targets)
+                        j = sum(test.row_targets)
                         row_targets = test.row_targets
                         col_targets = test.col_targets
                         ships = test.ships
@@ -84,13 +85,14 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
             for var_ord_type in [ord_random, ord_mrv, ord_dh]:
                 for val_ord_type in [val_arbitrary, val_decrease_lcv, val_decreasing_order,
                                      val_increasing_order, val_lcv]:
-                    for file in sorted(os.listdir(basic_test_folder)):
+                    for file in sorted(os.listdir(basic_test_folder),
+                                       key=lambda x: (int(x.split('_')[1]), int(x.split('_')[2]))):
                         tests = load_tests(os.path.join(basic_test_folder, file))
                         run_times = []
                         for test in tests:
                             # prepare a test
                             i = test.board_size
-                            j = sum(test.rol_targets)
+                            j = sum(test.row_targets)
                             row_targets = test.row_targets
                             col_targets = test.col_targets
                             ships = test.ships
@@ -145,4 +147,4 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
 
 if __name__ == '__main__':
     basic_test_model1('basic_test_model1.csv')
-    basic_test_model2('basic_test_model2.csv')
+    # basic_test_model2('basic_test_model2.csv')

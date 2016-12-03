@@ -1,12 +1,8 @@
-import math
 from test.utilities import *
 import os
 
 test_folder = os.path.dirname(os.path.abspath(__file__))
 static_test_folder = os.path.join(test_folder, 'static_tests')
-
-# the constraint tests had to be created manually
-ship_constraint_tests_folder = os.path.join(static_test_folder, 'ship_constaint_tests')
 basic_test_folder = os.path.join(static_test_folder, 'basic_tests')
 
 
@@ -30,8 +26,8 @@ class BattleshipTest:
             self.ship_map = ship_map
 
     def __str__(self):
-        return str((self.board_size,
-                    self.target_map,
+        return str((self.target_map,
+                    self.board_size,
                     self.row_targets,
                     self.col_targets,
                     self.ships,
@@ -128,7 +124,7 @@ def create_basic_test(starting_board_size, number_of_boards_to_test, number_of_t
     board_sizes = [starting_board_size * multiple for multiple in range(1, number_of_boards_to_test + 1)]
     for board_size in board_sizes:
         # we double target size till it reaches the maximum
-        target_sizes = [target_size for target_size in range(1, board_size ** 2)]
+        target_sizes = [target_size for target_size in range(1, board_size ** 2 + 1)]
         for target_size in target_sizes:
             create_tests(board_size, target_size, 0, number_of_tests_per_board_size_per_target_size, True,
                          basic_test_folder)
@@ -137,10 +133,9 @@ def create_basic_test(starting_board_size, number_of_boards_to_test, number_of_t
 if __name__ == '__main__':
     # Create and save tests to file
     # 5x5 map with 5 targets, no ship constraint, 10 tests
-    # create_tests(5, 5, 0, 10, True)
-    #
+    create_tests(5, 5, 0, 10, True)
+
     # # Load tests from file
-    # tests = load_tests('./static_tests/test_5_5_0_10.txt')
-    # ship_maps = [test.ship_map for test in tests]
-    # print_ship_maps(ship_maps)
-    create_basic_test(1, 20, 10)
+    tests = load_tests('./static_tests/test_5_5_0_10.txt')
+    ship_maps = [test.ship_map for test in tests]
+    print_ship_maps(ship_maps)
