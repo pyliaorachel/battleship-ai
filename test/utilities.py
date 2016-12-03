@@ -1,6 +1,5 @@
-from collections import defaultdict
+from collections import Counter, defaultdict
 from random import shuffle
-
 import numpy as np
 
 
@@ -123,7 +122,7 @@ def strip_assignment_map(assignment_map):
 
     Returns:
         target_map (list[list[int]]): A target map with 0 as ocean and 1 as target.
-        ship_map (list[list[int]]): A ship map with 0 as ocean and i > 0 as ships with i length.
+        ship_dict (dict[list[tuple]]): A dictionary of a ship's locations.
         ships (list[int]): Number of each length of ships.
     """
 
@@ -131,19 +130,34 @@ def strip_assignment_map(assignment_map):
         return 1 if x[0] > 0 else 0
 
     target_map = [list(map(convert, row)) for row in assignment_map]
-    ship_map = [list(map(lambda x: x[0], row)) for row in assignment_map]
 
-    ship_count = defaultdict(lambda: 0)
-    flatten_map = []
-    for row in ship_map:
-        flatten_map.extend(row)
-    for length in flatten_map:
-        if length != 0:
-            ship_count[length] += 1
-    ships = [0]
-    for i in range(1, max(ship_count.keys()) + 1):
-        ships.append(ship_count[i] / i)
-    return target_map, ship_map, ships
+    ship_dict = dict()
+    for i in range(len(assignment_map)):
+        for j in range(len(assignment_map)):
+            ship = assignment_map[i][j]
+            if ship != (0, 0):
+                if ship in ship_dict:
+                    ship_dict[ship].append((i, j))
+                else:
+                    ship_dict[ship] = [(i, j)]
+
+    count = defaultdict(int, Counter([i for i, _ in sorted(ship_dict.keys())]))
+    ships = [count[i] for i in range(max(count.keys()) + 1)]
+
+    return target_map, ship_dict, ships
+
+
+def valid_location_patterns(length, locations):
+    if len(locations) != length:
+        return False
+    row_coordinates, col_coordinates = zip(*sorted(locations))
+    row_coordinates = list(map(lambda x: x - row_coordinates[0], row_coordinates))
+    col_coordinates = list(map(lambda x: x - col_coordinates[0], col_coordinates))
+    if row_coordinates == list(range(length)) and col_coordinates == [0] * length:
+        return True
+    elif row_coordinates == [0] * length and col_coordinates == list(range(length)):
+        return True
+    return False
 
 
 ####################

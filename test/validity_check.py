@@ -11,7 +11,7 @@ def is_valid(assignment_map, problem):
     Returns:
         is_valid (bool): Whether or not the map is valid
     """
-    target_map, ship_map, ships = strip_assignment_map(assignment_map)
+    target_map, ship_dict, ships = strip_assignment_map(assignment_map)
     # step 1: check if targets are correct
     if not problem.check_targets(target_map):
         return False
@@ -21,6 +21,8 @@ def is_valid(assignment_map, problem):
         return False
 
     # step 3: check if assignment_map has valid ship assignment
-    # TODO: figure out a way to check ship assignment
-
+    for ship, locations in ship_dict.items():
+        length, _ = ship
+        if not valid_location_patterns(length, locations):
+            return False
     return True
