@@ -32,7 +32,8 @@ For the example ship map above, we also have:
 
 #### result structure example
 
-Instead of using a single number to indicate the ship size, use a tuple where the first number indicates ship size, the second number is the identifier of the specific ship in the ship size group.
+Instead of using a single number to indicate the ship size, use a tuple where the first number indicates ship size,
+the second number is the identifier of the specific ship in the ship size group.
 
 5x5 grid:
 
