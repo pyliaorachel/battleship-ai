@@ -4,10 +4,10 @@ import os
 from validity_check import is_valid
 from test_generator import *
 from utilities import *
-from csp.battleship_csp import battleship_csp_model1, battleship_csp_model2, battleship_csp_model3
-from csp.battleship_BT import *
-from csp.propagators import *
-from csp.orderings import *
+from battleship.csp.battleship_csp import battleship_csp_model1, battleship_csp_model2, battleship_csp_model3
+from battleship.csp.battleship_BT import *
+from battleship.csp.propagators import *
+from battleship.csp.orderings import *
 
 HEADER = 'model,board size,target size,propagation type,variable ordering type,value ordering type,avg runtime\n'
 results = os.path.join(test_folder, 'results')
