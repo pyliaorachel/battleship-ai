@@ -1,4 +1,4 @@
-from test.utilities import *
+from .utilities import *
 import os
 
 test_folder = os.path.dirname(os.path.abspath(__file__))

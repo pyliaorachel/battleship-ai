@@ -1,6 +1,6 @@
 import numpy as np
 from collections import Counter, defaultdict
-from test.utilities import *
+from .utilities import *
 
 
 def is_valid(assignment_map, problem):

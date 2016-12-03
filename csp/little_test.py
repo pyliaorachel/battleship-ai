@@ -1,7 +1,7 @@
-from csp.cspbase import *
-from csp.propagators import *
+from .cspbase import *
+from .propagators import *
 import csp.orderings as orderings
-from csp.battleship_BT import *
+from .battleship_BT import *
 import csp.battleship_csp as models
 import itertools
 import traceback

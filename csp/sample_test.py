@@ -1,7 +1,7 @@
-from csp.cspbase import *
-from csp.propagators import *
+from .cspbase import *
+from .propagators import *
 import csp.orderings as orderings
-from csp.battleship_BT import *
+from .battleship_BT import *
 import csp.battleship_csp as models
 import itertools
 import traceback
@@ -14,7 +14,7 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         1 2 2 
         2 2 0 
         '''
-        
+
         row_targets = [3, 3, 2]
         col_targets = [3, 3, 2]
         ships = [0, 1, 2, 1]
@@ -59,11 +59,11 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         1 2
         0 2
         '''
-        
+
         # row_targets = [2, 1]
         # col_targets = [1, 2]
         # ships = [0, 1, 1]
-       
+
 
         csp,vars = model(row_targets, col_targets, ships)
 
@@ -122,7 +122,7 @@ print(details)
 print("---GAC with val_decreasing_order---\n")
 details = test_sample_run(models.battleship_csp_model1, battleship_BT, 'GAC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
-print("---finished model 1 sample test---\n")  
+print("---finished model 1 sample test---\n")
 
 
 print("---model 2 sample test---\n")
@@ -144,7 +144,7 @@ print(details)
 print("---GAC with val_decreasing_order---\n")
 details = test_sample_run(models.battleship_csp_model2, BT, 'GAC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
-print("---finished model 2 sample test---\n")   
+print("---finished model 2 sample test---\n")
 
 print("---model 3 sample test---\n")
 print("---BT with val_decrease_lcv---\n")
@@ -165,5 +165,5 @@ print(details)
 print("---GAC with val_decreasing_order---\n")
 details = test_sample_run(models.battleship_csp_model3, BT, 'GAC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
-print("---finished model 2 sample test---\n")   
+print("---finished model 2 sample test---\n")
 

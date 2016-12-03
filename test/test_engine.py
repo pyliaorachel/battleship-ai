@@ -1,9 +1,9 @@
 import time
 import os
 
-from test.validity_check import is_valid
-from test.test_generator import *
-from test.utilities import *
+from .validity_check import is_valid
+from .test_generator import *
+from .utilities import *
 from csp.battleship_csp import battleship_csp_model1, battleship_csp_model2, battleship_csp_model3
 from csp.battleship_BT import *
 from csp.propagators import *
