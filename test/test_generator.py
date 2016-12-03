@@ -1,5 +1,6 @@
 import math
 from test.utilities import *
+import os
 
 test_folder = os.path.dirname(os.path.abspath(__file__))
 static_test_folder = os.path.join(test_folder, 'static_tests')
