@@ -1,4 +1,4 @@
-  
+
 '''
 Construct and return battleship CSP models.
 '''
@@ -250,9 +250,9 @@ def battleship_csp_model2(row_targets, col_targets, ships):
 # Initialize variable_array with general domain, domain value is in the format of: (ship_size, number) 
     dom = []
     dom.append((0,0))
-      for v in range(max_ship + 1):
-      	for n in range(ships[v]):
-        	dom.append((v,n))
+    for v in range(max_ship + 1):
+      for n in range(ships[v]):
+        dom.append((v,n))
 
     variable_array = []
     for i in range(h):
@@ -263,7 +263,7 @@ def battleship_csp_model2(row_targets, col_targets, ships):
       variable_array.append(row)
 
 # Initialize variable list
-		'''
+    '''
     vs = []
     for i in range(h):  # row
       for j in range(w):  # scan row
