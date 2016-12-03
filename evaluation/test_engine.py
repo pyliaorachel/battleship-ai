@@ -1,11 +1,10 @@
 import os
 import time
 
-from battleship.csp.orderings import *
 from test_generator import *
 from utilities import *
 from validity_check import is_valid
-
+from ..csp.orderings import *
 from ..csp.propagators import *
 from ..csp.battleship_BT import *
 from ..csp.battleship_csp import battleship_csp_model1, battleship_csp_model2, battleship_csp_model3
