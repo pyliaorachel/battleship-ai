@@ -1,6 +1,6 @@
 import os
 import time
-
+import numpy as np
 from test_generator import *
 from utilities import *
 from validity_check import is_valid
@@ -71,9 +71,9 @@ def basic_test_model1(filename, validity_check=False, trace_BT=False):
                                 print_assignment_map(solution)
                                 raise Exception
                     # model,board size,target size,propagation type,variable ordering type,value ordering type,runtime
-                    avg_runtime = sum(run_times) / len(run_times)
-                    avg_assignment = sum(assignments) / len(assignments)
-                    avg_pruning = sum(prunings) / len(prunings)
+                    avg_runtime = np.mean(run_times)
+                    avg_assignment = np.mean(assignments)
+                    avg_pruning = np.mean(prunings)
                     f.write(
                         '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime},{assignment},{pruning}\n'
                             .format(model=model.__name__, board_size=i, target_size=j, propagation_type=prop_type,
@@ -144,9 +144,9 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
                                     raise Exception
 
                         # model,board size,target size,propagation type,variable ordering type,value ordering type,runtime
-                        avg_runtime = sum(run_times) / len(run_times)
-                        avg_assignment = sum(assignments) / len(assignments)
-                        avg_pruning = sum(prunings) / len(prunings)
+                        avg_runtime = np.mean(run_times)
+                        avg_assignment = np.mean(assignments)
+                        avg_pruning = np.mean(prunings)
                         f.write(
                             '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime},{assignment},{pruning}\n'
                                 .format(model=model.__name__, board_size=i, target_size=j,
@@ -218,9 +218,9 @@ def basic_test_model3(filename, validity_check=False, trace_BT=False):
                                     raise Exception
 
                         # model,board size,target size,propagation type,variable ordering type,value ordering type,runtime
-                        avg_runtime = sum(run_times) / len(run_times)
-                        avg_assignment = sum(assignments) / len(assignments)
-                        avg_pruning = sum(prunings) / len(prunings)
+                        avg_runtime = np.mean(run_times)
+                        avg_assignment = np.mean(assignments)
+                        avg_pruning = np.mean(prunings)
                         f.write(
                             '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime},{assignment},{pruning}\n'
                                 .format(model=model.__name__, board_size=i, target_size=j,
