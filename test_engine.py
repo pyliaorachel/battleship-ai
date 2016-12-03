@@ -9,7 +9,7 @@ from propagators import *
 from battleship_BT import *
 from battleship_csp import battleship_csp_model1, battleship_csp_model2, battleship_csp_model3
 
-HEADER = 'model,board size,target size,propagation type,variable ordering type,value ordering type,avg runtime\n'
+HEADER = 'model,board size,target size,propagation type,variable ordering type,value ordering type,avg runtime,avg assignment,avg pruning\n'
 results = os.path.join(root, 'results')
 
 
@@ -24,6 +24,8 @@ def basic_test_model1(filename, validity_check=False, trace_BT=False):
                                    key=lambda x: (int(x.split('_')[1]), int(x.split('_')[2]))):
                     tests = load_tests(os.path.join(basic_test_folder, file))
                     run_times = []
+                    assignments = []
+                    prunings = []
                     for test in tests:
                         # prepare a test
                         i = test.board_size
@@ -52,7 +54,8 @@ def basic_test_model1(filename, validity_check=False, trace_BT=False):
                         # end timing
                         run_time = time.time() - start_time
                         run_times.append(run_time)
-
+                        assignments.append(solver.nDecisions)
+                        assignments.append(solver.nPrunings)
                         print()
                         # check if is valid
                         if validity_check:
@@ -69,12 +72,14 @@ def basic_test_model1(filename, validity_check=False, trace_BT=False):
                                 raise Exception
                     # model,board size,target size,propagation type,variable ordering type,value ordering type,runtime
                     avg_runtime = sum(run_times) / len(run_times)
+                    avg_assignment = sum(assignments) / len(assignments)
+                    avg_pruning = sum(prunings) / len(prunings)
                     f.write(
-                        '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime}\n'
+                        '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime},{assignment},{pruning}\n'
                             .format(model=model.__name__, board_size=i, target_size=j, propagation_type=prop_type,
                                     variable_ordering_type='default_ord_type',
-                                    value_ordering_type=val_ord_type.__name__,
-                                    runtime=avg_runtime))
+                                    value_ordering_type=val_ord_type.__name__, runtime=avg_runtime,
+                                    assignment=avg_assignment, pruning=avg_pruning))
                     f.flush()
 
 
@@ -90,6 +95,8 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
                                        key=lambda x: (int(x.split('_')[1]), int(x.split('_')[2]))):
                         tests = load_tests(os.path.join(basic_test_folder, file))
                         run_times = []
+                        assignments = []
+                        prunings = []
                         for test in tests:
                             # prepare a test
                             i = test.board_size
@@ -119,7 +126,8 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
                             # end timing
                             run_time = time.time() - start_time
                             run_times.append(run_time)
-
+                            assignments.append(solver.nDecisions)
+                            assignments.append(solver.nPrunings)
                             print()
                             # check if is valid
                             if validity_check:
@@ -137,13 +145,15 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
 
                         # model,board size,target size,propagation type,variable ordering type,value ordering type,runtime
                         avg_runtime = sum(run_times) / len(run_times)
+                        avg_assignment = sum(assignments) / len(assignments)
+                        avg_pruning = sum(prunings) / len(prunings)
                         f.write(
-                            '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime}\n'
+                            '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime},{assignment},{pruning}\n'
                                 .format(model=model.__name__, board_size=i, target_size=j,
                                         propagation_type=prop_type,
                                         variable_ordering_type='default_ord_type',
-                                        value_ordering_type=val_ord_type.__name__,
-                                        runtime=avg_runtime))
+                                        value_ordering_type=val_ord_type.__name__, runtime=avg_runtime,
+                                        assignment=avg_assignment, pruning=avg_pruning))
                         f.flush()
 
 
@@ -159,6 +169,8 @@ def basic_test_model3(filename, validity_check=False, trace_BT=False):
                                        key=lambda x: (int(x.split('_')[1]), int(x.split('_')[2]))):
                         tests = load_tests(os.path.join(basic_test_folder, file))
                         run_times = []
+                        assignments = []
+                        prunings = []
                         for test in tests:
                             # prepare a test
                             i = test.board_size
@@ -188,7 +200,8 @@ def basic_test_model3(filename, validity_check=False, trace_BT=False):
                             # end timing
                             run_time = time.time() - start_time
                             run_times.append(run_time)
-
+                            assignments.append(solver.nDecisions)
+                            assignments.append(solver.nPrunings)
                             print()
                             # check if is valid
                             if validity_check:
@@ -206,13 +219,15 @@ def basic_test_model3(filename, validity_check=False, trace_BT=False):
 
                         # model,board size,target size,propagation type,variable ordering type,value ordering type,runtime
                         avg_runtime = sum(run_times) / len(run_times)
+                        avg_assignment = sum(assignments) / len(assignments)
+                        avg_pruning = sum(prunings) / len(prunings)
                         f.write(
-                            '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime}\n'
+                            '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime},{assignment},{pruning}\n'
                                 .format(model=model.__name__, board_size=i, target_size=j,
                                         propagation_type=prop_type,
                                         variable_ordering_type='default_ord_type',
-                                        value_ordering_type=val_ord_type.__name__,
-                                        runtime=avg_runtime))
+                                        value_ordering_type=val_ord_type.__name__, runtime=avg_runtime,
+                                        assignment=avg_assignment, pruning=avg_pruning))
                         f.flush()
 
 
