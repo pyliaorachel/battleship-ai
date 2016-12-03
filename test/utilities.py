@@ -167,6 +167,11 @@ def print_target_maps(target_maps):
         print_target_map(target_map)
 
 
+def print_assignment_map(assignment_map):
+    for row in assignment_map:
+        print(row)
+
+
 ####################
 # File I/O Methods #
 ####################
