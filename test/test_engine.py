@@ -17,15 +17,17 @@ def basic_test_model1(filename, validity_check=False, trace_BT=False):
     with open(os.path.join(results, filename), 'w') as f:
         f.write(HEADER)
         model = battleship_csp_model1
-        for prop_type in ['BT', 'FC', 'GAC']:
-            for val_ord_type in [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_increasing_order, val_lcv]:
-                for i in range(1, 10):
-                    for j in range(1, i ** 2):
-                        # prepare a test
-                        test = BattleshipTest(generate_target_map(i, j))
-                        row_targets = test.row_targets
-                        col_targets = test.col_targets
-                        ships = test.ships
+        for i in range(1, 10):
+            for j in range(1, i ** 2):
+                # prepare a test
+                test = BattleshipTest(generate_target_map(i, j))
+                row_targets = test.row_targets
+                col_targets = test.col_targets
+                ships = test.ships
+
+                for prop_type in ['BT', 'FC', 'GAC']:
+                    for val_ord_type in [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_increasing_order,
+                                         val_lcv]:
 
                         # start timing
                         start_time = time.time()
@@ -76,17 +78,17 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
     with open(os.path.join(results, filename), 'w') as f:
         f.write(HEADER)
         model = battleship_csp_model2
-        for prop_type in ['BT', 'FC', 'GAC']:
-            for var_ord_type in [ord_random, ord_mrv, ord_dh]:
-                for val_ord_type in [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_increasing_order,
-                                     val_lcv]:
-                    for i in range(1, 10):
-                        for j in range(1, i ** 2):
-                            # prepare a test
-                            test = BattleshipTest(generate_target_map(i, j))
-                            row_targets = test.row_targets
-                            col_targets = test.col_targets
-                            ships = test.ships
+        for i in range(1, 10):
+            for j in range(1, i ** 2):
+                # prepare a test
+                test = BattleshipTest(generate_target_map(i, j))
+                row_targets = test.row_targets
+                col_targets = test.col_targets
+                ships = test.ships
+                for prop_type in ['BT', 'FC', 'GAC']:
+                    for var_ord_type in [ord_random, ord_mrv, ord_dh]:
+                        for val_ord_type in [val_arbitrary, val_decrease_lcv, val_decreasing_order,
+                                             val_increasing_order, val_lcv]:
 
                             # start timing
                             start_time = time.time()
@@ -137,16 +139,18 @@ def advanced_test_model1(filename, validity_check=False, trace_BT=False):
     with open(os.path.join(results, filename), 'w') as f:
         f.write(HEADER)
         model = battleship_csp_model1
-        for prop_type in ['BT', 'FC', 'GAC']:
-            for val_ord_type in [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_increasing_order, val_lcv]:
-                for file in sorted(os.listdir(scaling_tests_folder)):
-                    for test in load_tests(file):
-                        # prepare a test
-                        i = test.board_size
-                        j = sum(test.rol_targets)
-                        row_targets = test.row_targets
-                        col_targets = test.col_targets
-                        ships = test.ships
+        for file in sorted(os.listdir(scaling_tests_folder)):
+            for test in load_tests(file):
+                # prepare a test
+                i = test.board_size
+                j = sum(test.rol_targets)
+                row_targets = test.row_targets
+                col_targets = test.col_targets
+                ships = test.ships
+
+                for prop_type in ['BT', 'FC', 'GAC']:
+                    for val_ord_type in [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_increasing_order,
+                                         val_lcv]:
 
                         # start timing
                         start_time = time.time()
