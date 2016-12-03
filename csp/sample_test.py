@@ -1,8 +1,8 @@
-from cspbase import *
-from propagators import *
-import orderings
-from battleship_BT import *
-import battleship_csp as models
+from csp.cspbase import *
+from csp.propagators import *
+import csp.orderings
+from csp.battleship_BT import *
+import csp.battleship_csp as models
 import itertools
 import traceback
 
