@@ -2,7 +2,7 @@
 '''
 Construct and return battleship CSP models.
 '''
-from .cspbase import *
+from cspbase import *
 import itertools
 import re
 from copy import deepcopy
