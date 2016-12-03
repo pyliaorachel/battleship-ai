@@ -10,11 +10,6 @@ from copy import deepcopy
 #================ Helper Functions ================================
 #==================================================================
 
-
-#==================================================================
-#================ CSP model 1 =====================================
-#==================================================================
-
 '''
    a function to check whether the variables assignment in a line(col or row)
    satisfies the number of targets specified for that line.
@@ -66,7 +61,7 @@ def battleship_csp_model1(row_targets, col_targets, ships):
     w = len(col_targets)
 
 # Get length of largest ship max_ship
-    max_ship = len(ships)
+    max_ship = len(ships) - 1
 
 # Initialize variable_array with general domain 
     variable_array = []
@@ -74,7 +69,7 @@ def battleship_csp_model1(row_targets, col_targets, ships):
       row = []
       for j in range(w):
         dom = []
-        for v in range(max_ship):
+        for v in range(max_ship + 1):
           dom.append(v)
         var = Variable('({},{})'.format(i,j), dom)
         row.append(var)
@@ -151,13 +146,13 @@ def line_cons_model2(t, num_of_tar):
    @return : True when the number of ships of each size is met, False otherwise
 '''
 def ship_num_cons(t, max_ship_size, ships):
-  ships_t = [0] * (max_ship_size)
-  for l in range(1, max_ship_size):
+  ships_t = [0] * (max_ship_size + 1)
+  for l in range(1, max_ship_size + 1):
     ships_t[l] = ships[l] * l
   # initialize count_ship lists to all 0
-  total_count_ship = [0] * (max_ship_size)
+  total_count_ship = [0] * (max_ship_size + 1)
   num_count_ship = []
-  for l in range(0, max_ship_size):
+  for l in range(0, max_ship_size + 1):
     num_count_ship.append([0] * (ships[l]))
   # count total ships of all length
   for i in range(0,len(t)):
@@ -169,7 +164,7 @@ def ship_num_cons(t, max_ship_size, ships):
   if total_count_ship != ships_t:
     return False
   # check the numbered ship match length 
-  for l in range(1, max_ship_size):
+  for l in range(1, max_ship_size + 1):
     if num_count_ship[l] != [l] * (ships[l]):
       return False 
   return True
@@ -245,12 +240,12 @@ def battleship_csp_model2(row_targets, col_targets, ships):
     w = len(col_targets)
 
 # Get length of largest ship max_ship
-    max_ship = len(ships)
+    max_ship = len(ships) - 1
 
 # Initialize variable_array with general domain, domain value is in the format of: (ship_size, number) 
     dom = []
     dom.append((0,0))
-    for v in range(max_ship):
+    for v in range(max_ship + 1):
       for n in range(ships[v]):
         dom.append((v,n))
 
