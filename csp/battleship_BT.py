@@ -1,4 +1,4 @@
-from cspbase import BT 
+from csp.cspbase import BT
 from copy import deepcopy
 import time
 import math
