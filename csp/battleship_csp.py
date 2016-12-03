@@ -1,4 +1,4 @@
-  
+
 '''
 Construct and return battleship CSP models.
 '''
@@ -48,7 +48,10 @@ def battleship_csp_model1(row_targets, col_targets, ships):
        where battleship_csp is a csp representing battleship puzzle
        and variable_array is a list of lists
 
-       Constraints include:
+       Variable domain:
+          possible ship_size or sea(represented as 0)
+
+       Constraints:
           1. number of ships matching with row_targets for each row
           2. number of ships matching with col_targets for each column
     '''
@@ -115,6 +118,7 @@ def battleship_csp_model1(row_targets, col_targets, ships):
         battleship_csp.add_constraint(c)
     return battleship_csp, variable_array
 
+
 #==================================================================
 #================ CSP model 2 =====================================
 #==================================================================
@@ -127,7 +131,6 @@ def battleship_csp_model1(row_targets, col_targets, ships):
    @return : True when the number of targets is met, False otherwise
 '''
 def line_cons_model2(t, num_of_tar):
-  print(t)
   sum = 0
   for i in range(len(t)):
     if t[i][0] > 0:
@@ -143,25 +146,28 @@ def line_cons_model2(t, num_of_tar):
    @return : True when the number of ships of each size is met, False otherwise
 '''
 def ship_num_cons(t, max_ship_size, ships):
+  ships_t = [0] * (max_ship_size + 1)
+  for l in range(1, max_ship_size + 1):
+    ships_t[l] = ships[l] * l
   # initialize count_ship lists to all 0
   total_count_ship = [0] * (max_ship_size + 1)
-  num_count_ship = [0] * (max_ship_size + 1)
-  for l in range(1, max_ship_size + 1):
-    num_count_ship[l] = [0] * (ships[l])
+  num_count_ship = []
+  for l in range(0, max_ship_size + 1):
+    num_count_ship.append([0] * (ships[l]))
   # count total ships of all length
-  for i in range(len(t)):
+  for i in range(0,len(t)):
     total_count_ship[t[i][0]] += 1
-    num_count_ship[t[i][0]][t[i][0]] += 1
+    if(t[i][0] > 0):
+      num_count_ship[t[i][0]][t[i][1]] += 1
   # 0 is dummy
   total_count_ship[0] = 0
-  # divide by ship size to get number of shipss
-  for l in range(1, max_ship_size + 1):
-    total_count_ship[l] /= l
-  # check the numbered ship match length  
+  if total_count_ship != ships_t:
+    return False
+  # check the numbered ship match length 
   for l in range(1, max_ship_size + 1):
     if num_count_ship[l] != [l] * (ships[l]):
-      return False
-  return (total_count_ship == ships)
+      return False 
+  return True
 
 
 '''
@@ -174,6 +180,7 @@ def ship_num_cons(t, max_ship_size, ships):
    @return : True when ships of all length are intact, False otherwise
 '''
 def ship_intact_cons(t, h, w): 
+  #print("intact cons") 
   for i in range(h):
     for j in range(w):
       l = t[index(w,i,j)][0]
@@ -181,34 +188,48 @@ def ship_intact_cons(t, h, w):
       if l > 1:
         count_row = 0  # count in row
         count_col = 0  # count in col
+        inrow = 1
+        incol = 1
         for a in range(-l+1,l): # scan the neighbors within size range in line
-          if index(w,i,j+a) >= 0 and index(w,i,j+a) < h*w:
+          if index(w,i,j+a) >= 0 and index(w,i,j+a) < min((i+1)*w,(w*h)):
             if t[index(w,i,j+a)][0] == l and t[index(w,i,j+a)][1] == n:
               count_row += 1
             else:
               if count_row > 0 and count_row < l:
-                return False # broken
-          if index(w,i+a,j) >= 0 and index(w,i+a,j) < h*w:
-            if t[index(w,i+a,j)][0] == l and t[index(w,i+a,j)][1] == n: 
+                inrow = 0 # row broken
+          if index(w,i+a,j) >= 0 and index(w,i+a,j) < (w*h) and (index(w,i+a,j)%w == index(w,i,j)%w) :
+            if t[index(w,i+a,j)][0] == l and t[index(w,i+a,j)][1] == n:
               count_col += 1
             else:
               if count_col > 0 and count_col < l:
-                return False # broken
-      if count_row != l and count_col != l:
-        return False
-      if count_row == l and count_col == l:
-        return False
+                incol = 0 # col broken
+        if inrow == 0 and incol == 0:
+          #print("broken")
+          return False
+        if count_row != l and count_col != l:
+          #print("no match")
+          return False
+        if count_row == l and count_col == l:
+          #print("cross")
+          return False
   return True
 
 
-def battleship_csp_model_num(row_targets, col_targets, num_of_targets, ships):
+def battleship_csp_model2(row_targets, col_targets, ships):
+
     '''Return a CSP object representing a battleship CSP problem along 
        with an array of variables for the problem. That is return
        battleship_csp, variable_array
        where battleship_csp is a csp representing battleship puzzle
        and variable_array is a list of lists
 
-       Constraints include:
+      Variable domain:
+          tuples in the format of (ship_size, ship_number)
+          ship_size is the possible ship_size for this cell or sea as 0 
+          ship_number is the number for the ship
+          each ship of size l will be given a number from 0 to ships[l]-1 to identify as different ship
+
+      Constraints:
           1. number of ships matching with row_targets for each row
           2. number of ships matching with col_targets for each column
           3. number of ships matching the given ship number & is valid (i.e. no overlapping, misplacement, etc.)
@@ -222,23 +243,28 @@ def battleship_csp_model_num(row_targets, col_targets, num_of_targets, ships):
     max_ship = len(ships) - 1
 
 # Initialize variable_array with general domain, domain value is in the format of: (ship_size, number) 
+    dom = []
+    dom.append((0,0))
+    for v in range(max_ship + 1):
+      for n in range(ships[v]):
+        dom.append((v,n))
+
     variable_array = []
     for i in range(h):
       row = []
       for j in range(w):
-        dom = []
-        for v in range(max_ship+1):
-          for n in range(ships[v]):
-            dom.append((v,n))
         var = Variable('({},{})'.format(i,j), dom)
         row.append(var)
       variable_array.append(row)
 
 # Initialize variable list
+    '''
     vs = []
-    for i in range(h):
-      for j in range(w):
+    for i in range(h):  # row
+      for j in range(w):  # scan row
         vs.append(variable_array[i][j])
+    '''
+    vs = [i for row in variable_array for i in row]
 
 # Initialize constraints
     cons = [] 
@@ -247,9 +273,13 @@ def battleship_csp_model_num(row_targets, col_targets, num_of_targets, ships):
     for i in range(h):
       con = Constraint('C(row{})'.format(i), variable_array[i])
       sat_tuples = []
+      '''
       domains = []
       for var in variable_array[i]:
         domains.append(var.domain())
+			'''
+      domains = [var.domain() for domain in variable_array[i]]
+			
       for t in itertools.product(*domains):
         if line_cons_model2(t, row_targets[i]):
           sat_tuples.append(t)
@@ -260,10 +290,16 @@ def battleship_csp_model_num(row_targets, col_targets, num_of_targets, ships):
     for j in range(w):
       col = []
       sat_tuples = []
+      '''
       domains = []
       for i in range(h):
         col.append(variable_array[i][j])
         domains.append(variable_array[i][j].domain())
+      '''
+      for i in range(h):
+        col.append(variable_array[i][j])
+      domains = [var.domain() for var in col]
+
       con = Constraint('C(col{})'.format(j), col)
       for t in itertools.product(*domains):
         if line_cons_model2(t, col_targets[j]):
@@ -277,8 +313,11 @@ def battleship_csp_model_num(row_targets, col_targets, num_of_targets, ships):
     for k in range(0, w * h):
       domains.append(vs[k].domain())
     con = Constraint('C(ship)', vs)
+    #n = 0
     for t in itertools.product(*domains):
-      if ship_num_cons(t, max_ship, ships) and ship_intact_cons(t, h, w):
+      #print(n)
+      #n += 1
+      if (ship_num_cons(t, max_ship, ships) and ship_intact_cons(t, h, w)):
         sat_tuples.append(t)
     con.add_satisfying_tuples(sat_tuples)
     cons.append(con)
@@ -323,21 +362,11 @@ class battleship_csp_model(CSP):
       for i in range(self.h):
         row = []
         for j in range(self.w):
-          row.append(vars[i * self.w + j])
+          row.append(vars[i * self.w + j].get_assigned_value())
         sol_board.append(row)
       return sol_board
     else:
       return []
-
-
-
-
-
-
-
-
-
-
 
 
 
