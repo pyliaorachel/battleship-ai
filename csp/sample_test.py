@@ -1,6 +1,6 @@
 from csp.cspbase import *
 from csp.propagators import *
-import csp.orderings
+import csp.orderings as orderings
 from csp.battleship_BT import *
 import csp.battleship_csp as models
 import itertools
