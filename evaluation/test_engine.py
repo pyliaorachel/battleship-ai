@@ -10,7 +10,7 @@ from battleship.csp.propagators import *
 from battleship.csp.orderings import *
 
 HEADER = 'model,board size,target size,propagation type,variable ordering type,value ordering type,avg runtime\n'
-results = os.path.join(test_folder, 'results')
+results = os.path.join(evaluation_folder, 'results')
 
 
 def basic_test_model1(filename, validity_check=False, trace_BT=False):
