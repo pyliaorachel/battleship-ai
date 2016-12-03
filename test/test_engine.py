@@ -14,7 +14,7 @@ results = os.path.join(test_folder, 'results')
 
 
 def basic_test_model1(filename, validity_check=False, trace_BT=False):
-    with open(os.path.join(results, filename), 'a') as f:
+    with open(os.path.join(results, filename), 'w') as f:
         f.write(HEADER)
         model = battleship_csp_model1
         for prop_type in ['BT', 'FC', 'GAC']:
@@ -75,10 +75,11 @@ def basic_test_model1(filename, validity_check=False, trace_BT=False):
                                     variable_ordering_type='default_ord_type',
                                     value_ordering_type=val_ord_type.__name__,
                                     runtime=avg_runtime))
+                    f.flush()
 
 
 def basic_test_model2(filename, validity_check=False, trace_BT=False):
-    with open(os.path.join(results, filename), 'a') as f:
+    with open(os.path.join(results, filename), 'w') as f:
         f.write(HEADER)
         model = battleship_csp_model2
         for prop_type in ['BT', 'FC', 'GAC']:
@@ -143,10 +144,11 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
                                         variable_ordering_type='default_ord_type',
                                         value_ordering_type=val_ord_type.__name__,
                                         runtime=avg_runtime))
+                        f.flush()
 
 
 def basic_test_model3(filename, validity_check=False, trace_BT=False):
-    with open(os.path.join(results, filename), 'a') as f:
+    with open(os.path.join(results, filename), 'w') as f:
         f.write(HEADER)
         model = battleship_csp_model3
         for prop_type in ['BT', 'FC', 'GAC']:
@@ -211,6 +213,7 @@ def basic_test_model3(filename, validity_check=False, trace_BT=False):
                                         variable_ordering_type='default_ord_type',
                                         value_ordering_type=val_ord_type.__name__,
                                         runtime=avg_runtime))
+                        f.flush()
 
 
 if __name__ == '__main__':
