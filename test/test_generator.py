@@ -29,18 +29,6 @@ class BattleshipTest:
             self.ships = ships
             self.ship_map = ship_map
 
-    def check_targets(self, target_map):
-        # assume the input map is valid
-        return self.target_map == target_map
-
-    def check_ships(self, ship_map):
-        # assume the input map is valid
-        return self.ship_map == ship_map
-
-    def check_board(self, board):
-        ship_map = [list(zip(*row))[0] for row in board]
-        return self.check_ships(ship_map)
-
     def __str__(self):
         return str((self.board_size,
                     self.target_map,

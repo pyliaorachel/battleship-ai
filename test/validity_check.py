@@ -1,4 +1,6 @@
+import numpy as np
 from collections import Counter, defaultdict
+from test.utilities import *
 
 
 def is_valid(assignment_map, problem):
@@ -13,17 +15,21 @@ def is_valid(assignment_map, problem):
     """
     target_map, ship_dict, ships = strip_assignment_map(assignment_map)
     # step 1: check if targets are correct
-    if not problem.check_targets(target_map):
+    row_targets, column_targets = get_sum_targets(target_map)
+    if row_targets != problem.row_targets or column_targets != problem.col_targets:
+        print('Row or column targets are not correct!')
         return False
 
     # step 2: check if assignment_map has the right ships count
     if ships != problem.ships:
+        print('Ship count is not correct!!')
         return False
 
     # step 3: check if assignment_map has valid ship assignment
     for ship, locations in ship_dict.items():
         length, _ = ship
         if not valid_location_patterns(length, locations):
+            print('Ships do not have valid locations!')
             return False
     return True
 
