@@ -1,3 +1,5 @@
+import time
+
 from test.validity_check import is_valid
 from test.test_generator import BattleshipTest
 from test.utilities import *
@@ -19,6 +21,9 @@ def test_model1(trace_BT=False):
                     col_targets = test.col_targets
                     ships = test.ships
 
+                    # start timing
+                    start_time = time.time()
+
                     # run the test
                     battleship_csp, variable_array = model(row_targets, col_targets, ships)
                     print('Board Size: {size}x{size} | Target count: {count}'.format(size=i, count=j))
@@ -37,6 +42,10 @@ def test_model1(trace_BT=False):
                         solver.bt_search(prop_FC, 'default_ord_type', val_ord_type)
                     elif prop_type == 'GAC':
                         solver.bt_search(prop_GAC, 'default_ord_type', val_ord_type)
+
+                    # end timing
+                    run_time = time.time() - start_time
+
                     solution = battleship_csp.get_sol_board()
                     print()
 
@@ -67,6 +76,9 @@ def test_model2(trace_BT=False):
                         col_targets = test.col_targets
                         ships = test.ships
 
+                        # start timing
+                        start_time = time.time()
+
                         # run the test
                         battleship_csp, variable_array = model(row_targets, col_targets, ships)
                         print('Board Size: {size}x{size} | Target count: {count}'.format(size=i, count=j))
@@ -85,6 +97,10 @@ def test_model2(trace_BT=False):
                             solver.bt_search(prop_FC, var_ord_type, val_ord_type)
                         elif prop_type == 'GAC':
                             solver.bt_search(prop_GAC, var_ord_type, val_ord_type)
+
+                        # end timing
+                        run_time = time.time() - start_time
+
                         solution = battleship_csp.get_sol_board()
                         print()
 
