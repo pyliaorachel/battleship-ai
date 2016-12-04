@@ -53,7 +53,8 @@ def _save_result_to_file(filename, results):
             f.write(result)
 
 
-def _run(model, test, bt_type, prop_type, var_ord_type, val_ord_type):
+def _run(argument):
+    model, test, bt_type, prop_type, var_ord_type, val_ord_type = argument
     # prepare a test
     board_size = test.board_size
     target_size = sum(test.row_targets)
@@ -85,5 +86,5 @@ def _run(model, test, bt_type, prop_type, var_ord_type, val_ord_type):
 
 
 if __name__ == '__main__':
-    basic_test_model1('basic_test_model1.csv', 24)
+    basic_test_model1('basic_test_model1.csv', 2)
     # basic_test_model23('basic_test_model23.csv', 48)
