@@ -85,6 +85,8 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
             for test in tests:
                 # prepare a test
                 i = test.board_size
+                if i > 3:
+                    continue
                 j = sum(test.row_targets)
                 row_targets = test.row_targets
                 col_targets = test.col_targets
@@ -150,6 +152,8 @@ def basic_test_model3(filename, validity_check=False, trace_BT=False):
             for test in tests:
                 # prepare a test
                 i = test.board_size
+                if i > 3:
+                    continue
                 j = sum(test.row_targets)
                 row_targets = test.row_targets
                 col_targets = test.col_targets
