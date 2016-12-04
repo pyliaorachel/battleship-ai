@@ -1,6 +1,6 @@
 import os
 import time
-import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor, wait
 from test_generator import *
 from orderings import *
 from propagators import *
@@ -9,9 +9,10 @@ from battleship_csp import battleship_csp_model1, battleship_csp_model2, battles
 
 HEADER = 'model,board size,target size,propagation type,variable ordering type,value ordering type,runtime,assignment,pruning\n'
 results_folder = os.path.join(root, 'results')
-
+tests = []
 for file in sorted(os.listdir(basic_test_folder), key=lambda x: (int(x.split('_')[1]), int(x.split('_')[2]))):
-    tests = load_tests(os.path.join(basic_test_folder, file))
+    tests.extend(load_tests(os.path.join(basic_test_folder, file)))
+
 prop_types = ['BT', 'FC', 'GAC']
 var_ord_types = [ord_random, ord_mrv, ord_dh]
 val_ord_types = [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_increasing_order, val_lcv]
@@ -21,18 +22,19 @@ def basic_test_model1(filename, max_workers):
     futures = []
     model = battleship_csp_model1
     var_ord_type = ord_random  # was originally default_var_ord_type
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for test in tests:
             for prop_type in prop_types:
                 for val_ord_type in val_ord_types:
                     futures.append(
                         executor.submit(_run, model, test, battleship_BT, prop_type, var_ord_type, val_ord_type))
+    wait(futures)
     _save_result_to_file(filename, futures)
 
 
 def basic_test_model23(filename, max_workers):
     futures = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
         for test in tests:
             for model in [battleship_csp_model2, battleship_csp_model3]:
                 for prop_type in prop_types:
@@ -40,6 +42,7 @@ def basic_test_model23(filename, max_workers):
                         for val_ord_type in val_ord_types:
                             futures.append(
                                 executor.submit(_run, model, test, BT, prop_type, var_ord_type, val_ord_type))
+    wait(futures)
     _save_result_to_file(filename, futures)
 
 
