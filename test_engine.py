@@ -134,7 +134,7 @@ def basic_test_model2(filename, validity_check=False, trace_BT=False):
                                 '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime},{assignment},{pruning}\n'
                                     .format(model=model.__name__, board_size=i, target_size=j,
                                             propagation_type=prop_type,
-                                            variable_ordering_type='default_ord_type',
+                                            variable_ordering_type=var_ord_type,
                                             value_ordering_type=val_ord_type.__name__, runtime=run_time,
                                             assignment=solver.nDecisions, pruning=solver.nPrunings))
                             f.flush()
@@ -199,7 +199,7 @@ def basic_test_model3(filename, validity_check=False, trace_BT=False):
                                 '{model},{board_size},{target_size},{propagation_type},{variable_ordering_type},{value_ordering_type},{runtime},{assignment},{pruning}\n'
                                     .format(model=model.__name__, board_size=i, target_size=j,
                                             propagation_type=prop_type,
-                                            variable_ordering_type='default_ord_type',
+                                            variable_ordering_type=var_ord_type,
                                             value_ordering_type=val_ord_type.__name__, runtime=run_time,
                                             assignment=solver.nDecisions, pruning=solver.nPrunings))
                             f.flush()
