@@ -1,6 +1,6 @@
 import os
 import time
-from concurrent.futures import ThreadPoolExecutor, wait
+from concurrent.futures import ProcessPoolExecutor
 from test_generator import *
 from orderings import *
 from propagators import *
@@ -19,38 +19,38 @@ val_ord_types = [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_incr
 
 
 def basic_test_model1(filename, max_workers):
-    futures = []
+    arguments = []
     model = battleship_csp_model1
     var_ord_type = ord_random  # was originally default_var_ord_type
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for test in tests:
-            for prop_type in prop_types:
-                for val_ord_type in val_ord_types:
-                    futures.append(
-                        executor.submit(_run, model, test, battleship_BT, prop_type, var_ord_type, val_ord_type))
-    wait(futures)
-    _save_result_to_file(filename, futures)
+    # process arguments
+    for test in tests:
+        for prop_type in prop_types:
+            for val_ord_type in val_ord_types:
+                arguments.append((model, test, battleship_BT, prop_type, var_ord_type, val_ord_type))
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        results = list(executor.map(_run, arguments))
+
+    _save_result_to_file(filename, results)
 
 
 def basic_test_model23(filename, max_workers):
-    futures = []
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for test in tests:
-            for model in [battleship_csp_model2, battleship_csp_model3]:
-                for prop_type in prop_types:
-                    for var_ord_type in var_ord_types:
-                        for val_ord_type in val_ord_types:
-                            futures.append(
-                                executor.submit(_run, model, test, BT, prop_type, var_ord_type, val_ord_type))
-    wait(futures)
-    _save_result_to_file(filename, futures)
+    arguments = []
+    for test in tests:
+        for model in [battleship_csp_model2, battleship_csp_model3]:
+            for prop_type in prop_types:
+                for var_ord_type in var_ord_types:
+                    for val_ord_type in val_ord_types:
+                        arguments.append((model, test, battleship_BT, prop_type, var_ord_type, val_ord_type))
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        results = list(executor.map(_run, arguments))
+    _save_result_to_file(filename, results)
 
 
-def _save_result_to_file(filename, futures):
+def _save_result_to_file(filename, results):
     with open(os.path.join(results_folder, filename), 'w') as f:
         f.write(HEADER)
-        for future in futures:
-            f.write(future.result())
+        for result in results:
+            f.write(result)
 
 
 def _run(model, test, bt_type, prop_type, var_ord_type, val_ord_type):
