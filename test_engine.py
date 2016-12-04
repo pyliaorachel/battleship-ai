@@ -40,7 +40,7 @@ def basic_test_model23(filename, max_workers):
             for prop_type in prop_types:
                 for var_ord_type in var_ord_types:
                     for val_ord_type in val_ord_types:
-                        arguments.append((model, test, battleship_BT, prop_type, var_ord_type, val_ord_type))
+                        arguments.append((model, test, BT, prop_type, var_ord_type, val_ord_type))
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         results = list(executor.map(_run, arguments))
     _save_result_to_file(filename, results)
@@ -86,5 +86,5 @@ def _run(argument):
 
 
 if __name__ == '__main__':
-    basic_test_model1('basic_test_model1.csv', 2)
-    # basic_test_model23('basic_test_model23.csv', 48)
+    # basic_test_model1('basic_test_model1.csv', 2)
+    basic_test_model23('basic_test_model23.csv', 2)
