@@ -1,6 +1,6 @@
 import os
 import time
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from test_generator import *
 from orderings import *
 from propagators import *
@@ -19,42 +19,40 @@ val_ord_types = [val_arbitrary, val_decrease_lcv, val_decreasing_order, val_incr
 
 
 def basic_test_model1(filename, max_workers):
-    arguments = []
+    futures = []
     model = battleship_csp_model1
     var_ord_type = ord_random  # was originally default_var_ord_type
     # process arguments
+    executor = ProcessPoolExecutor(max_workers=max_workers)
     for test in tests:
         for prop_type in prop_types:
             for val_ord_type in val_ord_types:
-                arguments.append((model, test, battleship_BT, prop_type, var_ord_type, val_ord_type))
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        results = list(executor.map(_run, arguments))
-
-    _save_result_to_file(filename, results)
-
-
-def basic_test_model23(filename, max_workers):
-    arguments = []
-    for test in tests:
-        for model in [battleship_csp_model2, battleship_csp_model3]:
-            for prop_type in prop_types:
-                for var_ord_type in var_ord_types:
-                    for val_ord_type in val_ord_types:
-                        arguments.append((model, test, BT, prop_type, var_ord_type, val_ord_type))
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        results = list(executor.map(_run, arguments))
-    _save_result_to_file(filename, results)
-
-
-def _save_result_to_file(filename, results):
+                futures.append(executor.submit(_run, model, test, battleship_BT, prop_type, var_ord_type, val_ord_type))
+    executor.shutdown(wait=False)
     with open(os.path.join(results_folder, filename), 'w') as f:
         f.write(HEADER)
-        for result in results:
-            f.write(result)
+        for future in as_completed(futures):
+            f.write(future.result())
+            f.flush()
 
 
-def _run(argument):
-    model, test, bt_type, prop_type, var_ord_type, val_ord_type = argument
+def basic_test_model23(model, filename, max_workers):
+    futures = []
+    executor = ProcessPoolExecutor(max_workers=max_workers)
+    for test in tests:
+        for prop_type in prop_types:
+            for var_ord_type in var_ord_types:
+                for val_ord_type in val_ord_types:
+                    futures.append(executor.submit(_run, model, test, BT, prop_type, var_ord_type, val_ord_type))
+    executor.shutdown(wait=False)
+    with open(os.path.join(results_folder, filename), 'w') as f:
+        f.write(HEADER)
+        for future in as_completed(futures):
+            f.write(future.result())
+            f.flush()
+
+
+def _run(model, test, bt_type, prop_type, var_ord_type, val_ord_type):
     # prepare a test
     board_size = test.board_size
     target_size = sum(test.row_targets)
@@ -86,5 +84,6 @@ def _run(argument):
 
 
 if __name__ == '__main__':
-    # basic_test_model1('basic_test_model1.csv', 2)
-    basic_test_model23('basic_test_model23.csv', 2)
+    basic_test_model1('basic_test_model1.csv', 2)
+    # basic_test_model23(battleship_csp_model2, 'basic_test_model2.csv', 2)
+    # basic_test_model23(battleship_csp_model3, 'basic_test_model3.csv', 2)
