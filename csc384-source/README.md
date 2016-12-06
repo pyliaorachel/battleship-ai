@@ -71,4 +71,4 @@ the 4-sized ship:
 
 ## Methods
 
-Please see our [report](./battleship/csc384-project.pdf)
+Please see our report.
