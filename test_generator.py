@@ -135,7 +135,7 @@ if __name__ == '__main__':
     # 5x5 map with 5 targets, no ship constraint, 10 tests
     create_tests(5, 5, 0, 10, True)
 
-    # # Load tests from file
+    # Load tests from file
     tests = load_tests('./static_tests/test_5_5_0_10.txt')
     ship_maps = [test.ship_map for test in tests]
     print_ship_maps(ship_maps)

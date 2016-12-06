@@ -9,6 +9,7 @@ from battleship_csp import battleship_csp_model1, battleship_csp_model2, battles
 
 HEADER = 'model,board size,target size,propagation type,variable ordering type,value ordering type,runtime,assignment,pruning\n'
 results_folder = os.path.join(root, 'results')
+advanced_test_folder = os.path.join(static_test_folder, 'advanced_test')
 tests = []
 for file in sorted(os.listdir(basic_test_folder), key=lambda x: (int(x.split('_')[1]), int(x.split('_')[2]))):
     tests.extend(load_tests(os.path.join(basic_test_folder, file)))
@@ -84,6 +85,6 @@ def _run(model, test, bt_type, prop_type, var_ord_type, val_ord_type):
 
 
 if __name__ == '__main__':
-    basic_test_model1('basic_test_model1.csv', 2)
-    # basic_test_model23(battleship_csp_model2, 'basic_test_model2.csv', 2)
-    # basic_test_model23(battleship_csp_model3, 'basic_test_model3.csv', 2)
+    basic_test_model1('basic_test_model1.csv', 1)
+    basic_test_model23(battleship_csp_model2, 'basic_test_model2.csv', 1)
+    basic_test_model23(battleship_csp_model3, 'basic_test_model3.csv', 1)
