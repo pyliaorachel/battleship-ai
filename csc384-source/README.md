@@ -2,10 +2,57 @@
 
 [Battleship Game](https://en.wikipedia.org/wiki/Battleship_(game))
 
+---
 ## Usage
 
-...
+`cd` into the `battleship` folder. This is the folder containing all source files.  
 
+#### Basic Test
+
+To run basic test with board size 3x3 with the 3 models, run:  
+`python3 ./little_test.py`  
+
+To run basic test with board size larger than 3x3 with the 3 models, run:  
+`python3 ./sample_test.py`  
+
+Please be reminded that it took some time running model 2 and 3 with board size larger than 3x3. 
+
+A sample result below:
+
+```
+---model 1 sample test---
+
+---BT with val_decrease_lcv---
+
+CSP battleship solved. CPU Time used = 0.0017570000000000086
+CSP battleship  Assignments = 
+Var--(0,0)  =  3     Var--(0,1)  =  3     Var--(0,2)  =  3     Var--(1,0)  =  2     Var--(1,1)  =  2     Var--(1,2)  =  1     Var--(2,0)  =  2     Var--(2,1)  =  2     Var--(2,2)  =  0     
+bt_search finished
+Search made 12 variable assignments and pruned 0 variable values
+[[(3, 1), (3, 1), (3, 1)], [(2, 2), (2, 2), (1, 1)], [(2, 1), (2, 1), (0, 0)]]
+OK
+---BT with val_decreasing_order---
+...
+---FC with val_decrease_lcv---
+...
+---FC with val_decreasing_order---
+...
+---GAC with val_decrease_lcv---
+...
+---GAC with val_decreasing_order---
+...
+---finished model 1 sample test---
+```
+
+The nested list before `OK` is the solution board.  
+
+To create your own tests, open `sample_test.py` and follow the samples to create a new input in `test_sample_run` function. Comment out the other test cases.  
+
+#### Advanced Test
+
+@Iven
+
+---
 ## Problem Formalization
 
 A ship_map is a 2D array where 0 represents ocean and any connected integer n represents a ship with length n.
@@ -71,4 +118,4 @@ the 4-sized ship:
 
 ## Methods
 
-Please see our [report](./csc384-project.pdf)
+Please see csc384-project.pdf.
