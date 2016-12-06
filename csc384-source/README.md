@@ -7,9 +7,9 @@
 
 `cd` into the `battleship` folder. This is the folder containing all source files.  
 
-#### Basic Test
+#### Functionality Testing
 
-To run basic test with board size 3x3 with the 3 models, run:  
+To run basic test with board size 3x3 with the 3 models, run:  
 `python3 ./little_test.py`  
 
 To run basic test with board size larger than 3x3 with the 3 models, run:  
@@ -48,9 +48,35 @@ The nested list before `OK` is the solution board.
 
 To create your own tests, open `sample_test.py` and follow the samples to create a new input in `test_sample_run` function. Comment out the other test cases.  
 
-#### Advanced Test
+#### Performance Testing
 
-@Iven
+###### Creating Tests
+
+If you run `create_tests` or `create_basic_test` in `test_generator.py`, you can generate and save test cases into .txt files. The difference between the two is that you can increase the board size by a multiple, and for every board size, it will generate tests from 1 targets to n-squared targets (essentially filling up the game board).
+
+Sample usage:
+
+1. Open test_generator.py, and at the bottom inside the main function, you will see:
+	
+	```
+	# Create and save tests to file
+	# 5x5 map with 5 targets, no ship constraint, 10 tests
+	create_tests(5, 5, 0, 10, True)
+
+	# # Load tests from file
+	tests = load_tests('./static_tests/test_5_5_0_10.txt')
+	ship_maps = [test.ship_map for test in tests]
+	print_ship_maps(ship_maps)
+	```
+	
+
+###### Running Tests
+
+By running main method in `test_engine.py`, you will take advantage of ProcessPoolExecutor and split the run of each basic test into processes.
+
+You can configurate the number of worker your processors allow by changing the parameters, and the test results will be saved to the results folder with the filename you pass to the `basic_test_model1` and `basic_test_model23` methods.
+
+If you would like to manually load a saved test, you can use `load_tests` in `test_generator.py` or feed a target map into a new `BattleshipTest` object.
 
 ---
 ## Problem Formalization
