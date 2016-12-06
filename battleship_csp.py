@@ -12,20 +12,6 @@ from copy import deepcopy
 #==================================================================
 
 '''
-   a function to check whether the variables assignment in a line(col or row)
-   satisfies the number of targets specified for that line.
-   @param t : the tuple to check
-   @param num_of_tar: the number of targets for the line
-   @return : True when the number of targets is met, False otherwise
-'''
-def line_cons_model1(t, num_of_tar):
-  sum = 0
-  for i in range(len(t)):
-    if t[i] > 0:
-      sum += 1
-  return (sum == num_of_tar)
-
-'''
    a function to map the index(i,j) from a 2D board
    to k in 1D list given the width w of the board
    @param w: board width
@@ -39,6 +25,20 @@ def index(w,i,j):
 #==================================================================
 #================ CSP model 1 =====================================
 #==================================================================
+
+'''
+   a function to check whether the variables assignment in a line(col or row)
+   satisfies the number of targets specified for that line.
+   @param t : the tuple to check
+   @param num_of_tar: the number of targets for the line
+   @return : True when the number of targets is met, False otherwise
+'''
+def line_cons_model1(t, num_of_tar):
+  sum = 0
+  for i in range(len(t)):
+    if t[i] > 0:
+      sum += 1
+  return (sum == num_of_tar)
 
 def battleship_csp_model1(row_targets, col_targets, ships):
     '''Return a CSP object representing a battleship CSP problem along 
@@ -336,31 +336,45 @@ def battleship_csp_model2(row_targets, col_targets, ships):
 #==================================================================
 
 '''
-   a function to check whether the variables assignment in a line(col or row)
-   satisfies the number of targets specified for that line.
+   a function to count the grids occupied by variables (ships) in a line(col or row),
+   if the ship direction is in the major direction we check.
    @param t : the tuple to check
-   @param num_of_tar: the number of targets for the line
-   @return : True when the number of targets is met, False otherwise
+   @return : Number of grids occupied by variables (ships)
 '''
 def line_count_multi(t):
   sum = 0
   for i in range(len(t)):
     sum += t[i]
   return sum 
-
+'''
+   a function to count the grids occupied by variables (ships) in a line(col or row),
+   if the ship direction is not in the major direction we check.
+   @param t : the tuple to check
+   @return : Number of grids occupied by variables (ships)
+'''
 def line_count_single(t):
   sum = 0
   for i in range(len(t)):
     sum += (t[i] != 0)
   return sum
-
+'''
+   a function to count the total number of variables (ships) of a certain length.
+   @param t : the tuple to check
+   @param ship : the number of variables (ships) to match
+   @return : True if matched, False otherwise
+'''
 def single_ship_num_cons(t, ship):
   cnt = 0
   for l in t:
     if l != 0:
       cnt += 1
   return (ship == cnt)
-
+'''
+   a function to check if multiple variables (ships) are occupying the same grid.
+   At most 1 variable can have non-zero value assigned.
+   @param t : the tuple to check
+   @return : True if not overlapping, False otherwise
+'''
 def cell_overlap_cons(t):
   num_of_vars = len(t)
   return (t.count(0) >= (num_of_vars-1))

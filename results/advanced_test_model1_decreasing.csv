@@ -76,12 +76,10 @@ battleship_csp_model1,6,19,GAC,default_var_ord,val_decreasing_order,185.6605017,
 battleship_csp_model1,6,20,GAC,default_var_ord,val_decreasing_order,111.2646444,7065,18852
 battleship_csp_model1,6,21,GAC,default_var_ord,val_decreasing_order,27.80341554,202,690
 battleship_csp_model1,6,22,GAC,default_var_ord,val_decreasing_order,2432.526154,51821,191489
-battleship_csp_model1,6,24,GAC,default_var_ord,val_decreasing_order,18301.02095,62692,289477
 battleship_csp_model1,6,25,GAC,default_var_ord,val_decreasing_order,17.66810536,49,119
 battleship_csp_model1,6,26,GAC,default_var_ord,val_decreasing_order,970.1860349,5528,17341
 battleship_csp_model1,6,27,GAC,default_var_ord,val_decreasing_order,157.5881467,1173,609
 battleship_csp_model1,6,28,GAC,default_var_ord,val_decreasing_order,898.7500486,1405,6327
-battleship_csp_model1,6,29,GAC,default_var_ord,val_decreasing_order,5258.237664,20815,49440
 battleship_csp_model1,7,1,GAC,default_var_ord,val_decreasing_order,0.024183273,50,50
 battleship_csp_model1,7,2,GAC,default_var_ord,val_decreasing_order,0.024132967,50,49
 battleship_csp_model1,7,3,GAC,default_var_ord,val_decreasing_order,0.026354551,50,48

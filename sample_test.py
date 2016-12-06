@@ -6,18 +6,12 @@ import battleship_csp as models
 import itertools
 import traceback
 
+'''
+Tests for larger (4x4 up) board sizes.
+'''
+
 def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model=False, trace_BT=False, name=""):
     try:
-
-        '''
-        3 3 3 
-        1 2 2 
-        2 2 0 
-        '''
-
-        row_targets = [3, 3, 2]
-        col_targets = [3, 3, 2]
-        ships = [0, 1, 2, 1]
 
         '''
         0 0 2 2
@@ -26,9 +20,9 @@ def test_sample_run(model, BT, propType, var_ord_type, val_ord_type, trace_model
         3 3 3 0
         '''
 
-        # row_targets = [2, 1, 2, 3]
-        # col_targets = [1, 3, 2, 2]
-        # ships = [0, 1, 2, 1]
+        row_targets = [2, 1, 2, 3]
+        col_targets = [1, 3, 2, 2]
+        ships = [0, 1, 2, 1]
 
         '''
         3 0 1 0
@@ -165,5 +159,5 @@ print(details)
 print("---GAC with val_decreasing_order---\n")
 details = test_sample_run(models.battleship_csp_model3, BT, 'GAC', orderings.ord_random, orderings.val_decreasing_order, trace_model, trace_BT)
 print(details)
-print("---finished model 2 sample test---\n")
+print("---finished model 3 sample test---\n")
 

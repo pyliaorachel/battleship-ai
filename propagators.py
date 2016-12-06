@@ -5,9 +5,6 @@ bt_search.
 propagator == a function with the following template
     propagator(csp, newly_instantiated_variable=None)
         ==> returns (True/False, [(Variable, Value), (Variable, Value) ...])
-
-Consider implementing propagators for forward cehcking or GAC as a course project!        
-
 '''
 from collections import deque
 

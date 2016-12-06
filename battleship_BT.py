@@ -13,7 +13,6 @@ some additional initializations.
 bt_recurse is a lot different. 
     1. Instead of assigning to one variable at a time, we assign MULTIPLE variables, i.e. assigning a ship at a time. 
         This makes sure that no variable assignments will have ships overlapping with each other, since we will trace which cells have already been assigned values when assigning the next ship.
-
     2. The number of ships of different sizes assigned are tracked, so we guarantee that any final assignment will have the correct number of ships of various sizes.
 
     Hence we can savely get rid of the constraints checking valid ship placements & correct number of ships, which saves a lot of space and time.

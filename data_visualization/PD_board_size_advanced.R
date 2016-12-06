@@ -28,6 +28,28 @@ colnames(a_model1_GAC_aggr) = c('board.size',
                                 'gac.assignment1',
                                 'gac.pruning1')
 
+# advanced 1x1 ~ 10x10
+adv_dec_model1 = read.csv('../results/advanced_test_model1_decreasing.csv')
+a_model1_dec = subset(adv_dec_model1, `value.ordering.type` == 'val_decreasing_order')
+
+a_model1_dec_aggr = aggregate(a_model1_dec[, 7], list(a_model1_dec$`board.size`), mean)
+colnames(a_model1_dec_aggr) = c('board.size',
+                                'dec.runtime1')
+
+adv_dec_lcv_model1 = read.csv('../results/advanced_test_model1_decreasing_lcv.csv')
+a_model1_dec_lcv = subset(adv_dec_lcv_model1, `value.ordering.type` == 'val_decrease_lcv')
+
+a_model1_dec_lcv_aggr = aggregate(a_model1_dec_lcv[, 7], list(a_model1_dec_lcv$`board.size`), mean)
+colnames(a_model1_dec_lcv_aggr) = c('board.size',
+                                    'dec_lcv.runtime1')
+
+adv_inc_model1 = read.csv('../results/advanced_test_model1_increasing.csv')
+a_model1_inc = subset(adv_inc_model1, `value.ordering.type` == 'val_increasing_order')
+
+a_model1_inc_aggr = aggregate(a_model1_inc[, 7], list(a_model1_inc$`board.size`), mean)
+colnames(a_model1_inc_aggr) = c('board.size',
+                                'inc.runtime1')
+
 # data - board size x runtime, for model 1, for 3 propagation types
 basic = cbind(b_model1_BT_aggr, 
               b_model1_FC_aggr[2:4])
@@ -70,5 +92,11 @@ data = merge(bt_fc, a_model1_GAC_aggr[1:2], by='board.size', all.y=TRUE)
 
 write.csv(data, file='../results/large_propagator_runtime.csv')
 
+# data - board size x runtime, for model1, for GAC, for 3 value orderings
+data = cbind(a_model1_dec_aggr[1:2], 
+              a_model1_dec_lcv_aggr[2],
+              a_model1_inc_aggr[2])
+
+write.csv(data, file='../results/large_value_ordering.csv')
 
 
