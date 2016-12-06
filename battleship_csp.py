@@ -346,6 +346,7 @@ def line_count_multi(t):
   for i in range(len(t)):
     sum += t[i]
   return sum 
+
 '''
    a function to count the grids occupied by variables (ships) in a line(col or row),
    if the ship direction is not in the major direction we check.
@@ -357,6 +358,7 @@ def line_count_single(t):
   for i in range(len(t)):
     sum += (t[i] != 0)
   return sum
+
 '''
    a function to count the total number of variables (ships) of a certain length.
    @param t : the tuple to check
@@ -369,6 +371,7 @@ def single_ship_num_cons(t, ship):
     if l != 0:
       cnt += 1
   return (ship == cnt)
+
 '''
    a function to check if multiple variables (ships) are occupying the same grid.
    At most 1 variable can have non-zero value assigned.
