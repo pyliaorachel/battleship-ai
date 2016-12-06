@@ -68,3 +68,15 @@ the 4-sized ship:
 ## Methods
 
 Please see our [report](./csc384-project.pdf)
+
+## Creating Tests
+
+If you run `create_tests` or `create_basic_test`, you can generate and save test cases into .txt files. The difference between `create_tests` and `create_basic_test` is that you can increase the board size by a multiple and for every board size, it will generate tests from 1 targets to n-squared targets (essentially filling up the game board).
+
+## Running Tests
+
+By running main method in `test_engine.py`, you will take advantage of ProcessPoolExecutor and split the running of each basic test into processes.
+
+You can configurate the number of worker your processors allow by changing the parameters, and the test results will be saved to the results folder with the filename you pass to the `basic_test_model1` and `basic_test_model23` methods.
+
+If you would like to manually load a saved tests, you can use `load_tests` in `test_generator.py` or feed a target map into a new `BattleshipTest` object.
