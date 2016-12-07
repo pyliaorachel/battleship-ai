@@ -91,7 +91,7 @@ Ship Map 10/10
 
 To run the tests, run: `python3 test_engine.py`
 
-By running this, you will take advantage of ProcessPoolExecutor and split the run of each basic test into processes.
+In this engine, the tests in `static_tests/basic_tests` will be run, i.e. running 3 models on board size 1x1 to 4x4. By running this, you will take advantage of ProcessPoolExecutor and split the run of each basic test into processes. 3 processes are used in this engine, each running one model.
 
 A sample result below:
 
